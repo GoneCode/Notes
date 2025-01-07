@@ -10,6 +10,7 @@ Here's a step-by-step guide to understanding window functions in SQL:
 Window functions perform a calculation across a "window" of rows related to the current row. Unlike aggregate functions (e.g., `SUM`, `AVG`),
 which return a single value for a group, window functions return a value for each row in the query result.
 
+
 ---
 
 ### **2. Components of a Window Function**
