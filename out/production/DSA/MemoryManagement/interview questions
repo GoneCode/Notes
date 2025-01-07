@@ -1,0 +1,115 @@
+Here are some commonly asked **interview questions about memory leaks in Java**:
+
+---
+
+### **Basic Questions**
+1. **What is a memory leak in Java?**
+   - A memory leak occurs when objects are no longer needed but are still referenced, preventing the JVM's garbage collector from reclaiming their memory.
+
+2. **How can memory leaks occur in Java when there is garbage collection?**
+   - Memory leaks can occur if objects are unintentionally retained in memory through references, such as:
+     - Static variables holding object references.
+     - Improper use of collections like `Map` or `List`.
+     - Listeners or callbacks not being deregistered.
+
+3. **Can you provide an example of a memory leak in Java?**
+   ```java
+   import java.util.ArrayList;
+   import java.util.List;
+
+   public class MemoryLeakExample {
+       private static List<Object> list = new ArrayList<>();
+
+       public static void main(String[] args) {
+           for (int i = 0; i < 1000; i++) {
+               list.add(new Object());
+           }
+           // Even after these objects are no longer needed,
+           // the static list reference prevents their garbage collection.
+       }
+   }
+   ```
+
+4. **How does garbage collection help prevent memory leaks?**
+   - Garbage collection automatically reclaims memory by removing unreferenced objects. However, it cannot reclaim objects that are still referenced, even if those references are unintentional.
+
+---
+
+### **Advanced Questions**
+5. **What are some common causes of memory leaks in Java applications?**
+   - **Unclosed resources** (e.g., database connections, file streams).
+   - **Static references** holding objects unnecessarily.
+   - **Inner classes** holding implicit references to outer classes.
+   - **Listeners/Callbacks** that are not deregistered.
+   - **ThreadLocal variables** not cleared explicitly.
+
+6. **How would you detect a memory leak in a Java application?**
+   - Use tools like:
+     - **VisualVM**
+     - **JConsole**
+     - **Eclipse Memory Analyzer (MAT)**
+     - **YourKit Profiler**
+   - Monitor heap usage and look for:
+     - Increasing memory usage over time.
+     - Unreachable but still referenced objects.
+
+7. **How can you fix a memory leak in Java?**
+   - Identify the source of the leak using profiling tools.
+   - Remove unnecessary references.
+   - Ensure proper resource management by using constructs like:
+     - **try-with-resources** for closing resources.
+     - **WeakReference** or **SoftReference** where appropriate.
+   - Deregister listeners or callbacks explicitly.
+
+8. **What is the role of `WeakReference` and `SoftReference` in preventing memory leaks?**
+   - **WeakReference**: Allows objects to be garbage-collected when no strong references exist.
+   - **SoftReference**: Keeps objects in memory until the JVM runs low on memory.
+
+9. **What are phantom references, and how do they relate to memory leaks?**
+   - A **PhantomReference** refers to an object that has been finalized and is ready for garbage collection. These are used to clean up resources after the object is reclaimed and can help detect when an object is eligible for GC.
+
+10. **Can memory leaks occur in Java if you use `finalize()` methods?**
+    - Yes, improper use of `finalize()` can cause memory leaks if the method accidentally creates new references to the object, delaying its garbage collection.
+
+---
+
+### **Scenario-Based Questions**
+11. **You notice high memory usage in your Java application. How would you diagnose the issue?**
+    - Steps to diagnose:
+      1. Monitor the application using tools like VisualVM or JConsole.
+      2. Generate a heap dump when memory usage is high.
+      3. Analyze the heap dump using Eclipse MAT or similar tools.
+      4. Look for objects with unusually high retention sizes or large collections.
+
+12. **How can static variables cause memory leaks?**
+    - Static variables persist for the lifetime of the application. If they hold references to large objects or collections, these objects cannot be garbage-collected, leading to memory leaks.
+
+13. **Explain how improper use of `HashMap` or `Set` can lead to memory leaks.**
+    - If custom objects are used as keys in a `HashMap` or elements in a `Set` without properly overriding `equals()` and `hashCode()`, memory leaks can occur due to retained references even after the objects are no longer needed.
+
+14. **What is a circular reference, and can it cause memory leaks in Java?**
+    - A circular reference occurs when two or more objects reference each other. In Java, this does **not** cause memory leaks because the garbage collector can detect unreachable cycles.
+
+15. **Can a memory leak occur with ThreadLocal variables?**
+    - Yes, memory leaks can occur if `ThreadLocal` variables are not explicitly removed using `ThreadLocal.remove()` when the thread is done, as the references may persist.
+
+---
+
+### **Best Practices to Avoid Memory Leaks**
+16. **What are some coding practices to avoid memory leaks?**
+    - Use **try-with-resources** for managing resources.
+    - Avoid unnecessary **static references**.
+    - Use **WeakReferences** for cache-like structures.
+    - Explicitly **deregister listeners and callbacks**.
+    - Ensure proper implementation of `equals()` and `hashCode()` in objects used in collections.
+
+17. **How does the `try-with-resources` construct help prevent memory leaks?**
+    - It ensures that resources such as file streams, database connections, and sockets are automatically closed, even if an exception occurs.
+
+18. **What are `OutOfMemoryError` and `Memory Leak`, and how are they related?**
+    - **OutOfMemoryError**: Indicates the JVM cannot allocate more memory, often caused by memory leaks.
+    - **Memory Leak**: Gradual accumulation of objects in memory due to unintentional references, which may eventually lead to `OutOfMemoryError`.
+
+---
+
+Would you like detailed explanations or examples for any of these questions?

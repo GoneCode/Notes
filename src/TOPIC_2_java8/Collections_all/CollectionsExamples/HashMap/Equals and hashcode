@@ -1,0 +1,122 @@
+In Java, the `equals()` and `hashCode()` methods are critical for the correct operation of a `HashMap`.
+These methods determine how keys are compared and how their hash codes are computed, which directly affects the efficiency and correctness of the `HashMap`.
+
+### **Importance of `equals()` and `hashCode()` in HashMap**
+1. **`equals()` method**:
+This method determines whether two keys are considered equal. When a collision occurs (i.e., two keys hash to the same bucket), `HashMap` uses `equals()` to compare the keys and check if they are the same.
+
+2. **`hashCode()` method**:
+This method returns an integer value that represents the hash code of the key. The hash code helps `HashMap` quickly locate the bucket where a key might be stored. If two objects are considered equal by `equals()`, they must have the same hash code.
+
+### **Basic Requirements**
+1. **Consistency**: The `equals()` and `hashCode()` methods should be consistent across multiple invocations. If two objects are considered equal by `equals()`, they must have the same hash code for the entire duration of their existence.
+
+2. **Equality**: If two objects are considered equal by `equals()`, they must have the same hash code. However, having the same hash code doesn’t guarantee that two objects are equal (since hash collisions can happen), but objects that are not equal should have different hash codes to reduce collisions.
+
+### **Steps to Implement `equals()` and `hashCode()` Correctly**
+
+1. **Override `equals()` method**: This method should compare the relevant fields of the object to check if they are equal.
+
+2. **Override `hashCode()` method**: This method should compute the hash code based on the same fields used in `equals()`.
+The `hashCode()` method should return a unique integer for different objects but should return the same value for objects that are considered equal by `equals()`.
+
+---
+
+### **Example: Writing Good `equals()` and `hashCode()`**
+
+Let’s take an example of a `Person` class with `name` and `age` as the fields.
+
+```java
+import java.util.Objects;
+
+public class Person {
+    private TOPIC_1.javaOOPSConcepts.String name;
+    private int age;
+
+    // Constructor
+    public Person(TOPIC_1.javaOOPSConcepts.String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters and Setters
+    public TOPIC_1.javaOOPSConcepts.String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    // Overriding equals() method
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Check for reference equality
+        if (obj == null || getClass() != obj.getClass()) return false; // Check for null and different class types
+        Person person = (Person) obj;
+        return age == person.age && Objects.equals(name, person.name); // Compare fields
+    }
+
+    // Overriding hashCode() method
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age); // Generate hash code based on fields
+    }
+
+    // Main method for testing
+    public static void main(TOPIC_1.javaOOPSConcepts.String[] args) {
+        // Create HashMap
+        java.util.HashMap<Person, TOPIC_1.javaOOPSConcepts.String> map = new java.util.HashMap<>();
+
+        // Create Person objects
+        Person p1 = new Person("Alice", 30);
+        Person p2 = new Person("Bob", 25);
+        Person p3 = new Person("Alice", 30); // Same as p1 (equal but different object)
+
+        // Put the objects in the map
+        map.put(p1, "Engineer");
+        map.put(p2, "Doctor");
+        map.put(p3, "Artist"); // p3 has the same name and age as p1, so they are equal
+
+        // Test retrieval
+        System.out.println(map.get(p1)); // Should print "Engineer"
+        System.out.println(map.get(p3)); // Should print "Engineer", because p1 and p3 are equal
+    }
+}
+```
+
+### **Explanation of the Code**
+
+1. **`equals()` method**:
+   - First, we check if the current object (`this`) is the same as the passed object (`obj`). If they are the same, we return `true`.
+   - Then, we check if the passed object is `null` or of a different class. If so, we return `false`.
+   - Finally, we compare the fields (`name` and `age`) using `Objects.equals()` for `name` (to handle `null` values) and direct comparison for `age`.
+
+2. **`hashCode()` method**:
+   - We use `Objects.hash()` to generate a hash code based on the `name` and `age` fields. This method combines the hash codes of the fields and returns a single integer hash code for the object.
+
+### **Key Points**
+- **Symmetry**: If `a.equals(b)` is `true`, then `b.equals(a)` must also be `true`.
+- **Transitivity**: If `a.equals(b)` and `b.equals(c)` are both `true`, then `a.equals(c)` must also be `true`.
+- **Consistency**: If two objects are equal, calling `equals()` on them multiple times should consistently return the same result.
+- **Null Comparison**: An object must not be equal to `null`, and `null.equals()` will throw a `NullPointerException`.
+
+### **Java Best Practices for `equals()` and `hashCode()`**
+- **Use `Objects.equals()`** for comparing fields. This handles null values gracefully.
+- **Use `Objects.hash()`** for generating a hash code based on multiple fields. This avoids manual calculation of the hash code and is more readable.
+- If the class has a **single field** that defines equality, you can implement `equals()` and `hashCode()` based on that field. However, for classes with multiple fields, include all relevant fields that define equality in both methods.
+
+### **Testing the Code**
+
+When you run the code, the following happens:
+1. `p1` and `p3` are considered equal because they have the same `name` and `age`.
+2. When you put `p1` and `p3` into the map, the `hashCode()` for both will be the same, and the `equals()` method will confirm they are equal.
+3. The value associated with `p1` ("Engineer") is also accessible through `p3` since `p1` and `p3` are considered equal.
+
+---
+
+### **Final Thoughts**
+- Always override **both** `equals()` and `hashCode()` together to maintain the contract between them.
+- Pay careful attention to performance, especially in hash-based collections like `HashMap`, where a bad `hashCode()` can lead to performance degradation due to collisions.
+
+Let me know if you need more details or further clarification on this topic! 😊

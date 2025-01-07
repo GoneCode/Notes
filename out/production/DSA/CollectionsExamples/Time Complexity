@@ -1,0 +1,200 @@
+Here's a detailed breakdown of the time complexities of various Java collections, along with examples and explanations:
+
+---
+
+### 1. **ArrayList**
+- **Underlying Data Structure**: Dynamic Array
+- **Time Complexity**:
+  - **Access**: O(1) (direct index access)
+  - **Search**: O(n) (linear search)
+  - **Insertion**:
+    - At the end: O(1) (amortized, considering resizing)
+    - At an index: O(n) (shifting elements)
+  - **Deletion**:
+    - From the end: O(1)
+    - From an index: O(n) (shifting elements)
+
+**Example**:
+```java
+import java.util.ArrayList;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(10); // O(1)
+        list.add(20); // O(1)
+        list.add(1, 15); // O(n) (shifting elements)
+        System.out.println(list.get(1)); // O(1)
+        list.remove(1); // O(n)
+    }
+}
+```
+
+---
+
+### 2. **LinkedList**
+- **Underlying Data Structure**: Doubly Linked List
+- **Time Complexity**:
+  - **Access**: O(n) (traversing nodes)
+  - **Search**: O(n)
+  - **Insertion**:
+    - At the head or tail: O(1)
+    - At an index: O(n) (traversing nodes)
+  - **Deletion**:
+    - From head or tail: O(1)
+    - At an index: O(n)
+
+**Example**:
+```java
+import java.util.LinkedList;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(10); // O(1)
+        list.addFirst(5); // O(1)
+        list.addLast(15); // O(1)
+        list.remove(1); // O(n)
+    }
+}
+```
+
+---
+
+### 3. **HashMap**
+- **Underlying Data Structure**: Array of Buckets (each bucket can use Linked List or Tree)
+- **Time Complexity**:
+  - **Insertion**: O(1) (amortized, considering good hash function)
+  - **Search**: O(1)
+  - **Deletion**: O(1)
+  - **In worst case (poor hash function)**: O(n) for all operations (if all keys collide into one bucket)
+
+**Example**:
+```java
+import java.util.HashMap;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        HashMap<Integer, String> map = new HashMap<>();
+        map.put(1, "One"); // O(1)
+        map.put(2, "Two"); // O(1)
+        System.out.println(map.get(1)); // O(1)
+        map.remove(2); // O(1)
+    }
+}
+```
+
+---
+
+### 4. **TreeMap**
+- **Underlying Data Structure**: Red-Black Tree
+- **Time Complexity**:
+  - **Insertion**: O(log n)
+  - **Search**: O(log n)
+  - **Deletion**: O(log n)
+
+**Example**:
+```java
+import java.util.TreeMap;
+
+public class TreeMapExample {
+    public static void main(String[] args) {
+        TreeMap<Integer, String> map = new TreeMap<>();
+        map.put(1, "One"); // O(log n)
+        map.put(3, "Three"); // O(log n)
+        System.out.println(map.get(1)); // O(log n)
+        map.remove(3); // O(log n)
+    }
+}
+```
+
+---
+
+### 5. **HashSet**
+- **Underlying Data Structure**: HashMap (with dummy values)
+- **Time Complexity**:
+  - **Insertion**: O(1)
+  - **Search**: O(1)
+  - **Deletion**: O(1)
+  - **In worst case (poor hash function)**: O(n)
+
+**Example**:
+```java
+import java.util.HashSet;
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        HashSet<Integer> set = new HashSet<>();
+        set.add(1); // O(1)
+        set.add(2); // O(1)
+        System.out.println(set.contains(1)); // O(1)
+        set.remove(2); // O(1)
+    }
+}
+```
+
+---
+
+### 6. **TreeSet**
+- **Underlying Data Structure**: Red-Black Tree
+- **Time Complexity**:
+  - **Insertion**: O(log n)
+  - **Search**: O(log n)
+  - **Deletion**: O(log n)
+
+**Example**:
+```java
+import java.util.TreeSet;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        TreeSet<Integer> set = new TreeSet<>();
+        set.add(10); // O(log n)
+        set.add(5); // O(log n)
+        System.out.println(set.contains(5)); // O(log n)
+        set.remove(10); // O(log n)
+    }
+}
+```
+
+---
+
+### 7. **PriorityQueue**
+- **Underlying Data Structure**: Heap
+- **Time Complexity**:
+  - **Insertion**: O(log n)
+  - **Peek (get min/max)**: O(1)
+  - **Poll (remove min/max)**: O(log n)
+
+**Example**:
+```java
+import java.util.PriorityQueue;
+
+public class PriorityQueueExample {
+    public static void main(String[] args) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        queue.add(10); // O(log n)
+        queue.add(5); // O(log n)
+        System.out.println(queue.peek()); // O(1)
+        queue.poll(); // O(log n)
+    }
+}
+```
+
+---
+
+### Summary Table
+
+| Collection        | Access   | Search   | Insertion | Deletion  |
+|--------------------|----------|----------|-----------|-----------|
+| **ArrayList**      | O(1)     | O(n)     | O(1)*     | O(n)      |
+| **LinkedList**     | O(n)     | O(n)     | O(1)**    | O(n)      |
+| **HashMap**        | -        | O(1)     | O(1)      | O(1)      |
+| **TreeMap**        | -        | O(log n) | O(log n)  | O(log n)  |
+| **HashSet**        | -        | O(1)     | O(1)      | O(1)      |
+| **TreeSet**        | -        | O(log n) | O(log n)  | O(log n)  |
+| **PriorityQueue**  | O(n)     | O(n)     | O(log n)  | O(log n)  |
+
+---
+
+Would you like additional details on any specific collection?

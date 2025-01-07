@@ -1,0 +1,123 @@
+If a **`HashSet`** is storing duplicate objects, the most likely reason is an issue with the **`hashCode()`** and **`equals()`** methods of the objects being added.
+
+### **How HashSet Ensures Uniqueness:**
+- When you add an element to a `HashSet`, it uses the **`hashCode()`** of the object to determine which bucket the element should go into.
+- If two objects have the same hash code, the `HashSet` checks whether they are truly equal by using the **`equals()`** method.
+- **For two objects to be considered equal**, they must have the same hash code and return `true` when compared using the `equals()` method.
+
+### **Reasons for Storing Duplicates:**
+
+1. **`hashCode()` is not overridden properly:**
+   - If two objects are considered equal according to the `equals()` method, but their hash codes are different, the `HashSet` will treat them as distinct objects, even if they are logically the same. This would result in duplicates being stored.
+   - **Example Issue:**
+     ```java
+     public class Person {
+         private String name;
+         private int age;
+
+         // hashCode is incorrectly implemented, leading to duplicates
+         @Override
+         public int hashCode() {
+             return 123; // Same hash code for all objects
+         }
+
+         @Override
+         public boolean equals(Object obj) {
+             if (this == obj) return true;
+             if (obj == null || getClass() != obj.getClass()) return false;
+             Person person = (Person) obj;
+             return age == person.age && name.equals(person.name);
+         }
+     }
+     ```
+
+     In this example, even though the `equals()` method is correct, the `hashCode()` method always returns the same value (`123`), causing all objects to land in the same bucket in the `HashSet`. This can lead to unexpected behavior and **duplicate storage**.
+
+2. **`equals()` is not properly overridden:**
+   - If the `equals()` method is not implemented correctly, two logically identical objects might be considered unequal. This can cause duplicates to be stored in the `HashSet`.
+   - **Example Issue:**
+     ```java
+     public class Person {
+         private String name;
+         private int age;
+
+         // hashCode is implemented, but equals is incorrect
+         @Override
+         public boolean equals(Object obj) {
+             return false;  // Always returns false
+         }
+
+         @Override
+         public int hashCode() {
+             return Objects.hash(name, age);
+         }
+     }
+     ```
+     Here, the `equals()` method always returns `false`, meaning every object is treated as unique, even if the `hashCode()` is the same. This can lead to multiple entries in the `HashSet`, even if the objects have the same data.
+
+3. **Not using `super.hashCode()` in overridden `hashCode()`:**
+   - If you override the `hashCode()` method and forget to include the `super.hashCode()` for the parent class (if necessary), or implement it incorrectly, the hash codes for logically identical objects may be different, causing duplicates.
+   - **Example Issue:**
+     ```java
+     public class Person {
+         private String name;
+         private int age;
+
+         @Override
+         public int hashCode() {
+             return Objects.hash(name); // Only using one field
+         }
+
+         @Override
+         public boolean equals(Object obj) {
+             if (this == obj) return true;
+             if (obj == null || getClass() != obj.getClass()) return false;
+             Person person = (Person) obj;
+             return age == person.age && name.equals(person.name);
+         }
+     }
+     ```
+     In this case, `hashCode()` uses only the `name` field, but the `equals()` method compares both `name` and `age`. If two objects have the same name but different ages, their hash codes will be the same, but `equals()` will return `false`. This can lead to logical duplicates in the `HashSet`.
+
+### **Correct Implementation of `hashCode()` and `equals()`**
+
+To avoid storing duplicate objects in a `HashSet`, you must properly override both the **`hashCode()`** and **`equals()`** methods, ensuring they are consistent with each other. Here's an example of how to correctly implement them:
+
+```java
+import java.util.Objects;
+
+public class Person {
+    private String name;
+    private int age;
+
+    // Correctly overridden hashCode and equals methods
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age); // Consider both fields in hash code calculation
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return age == person.age && name.equals(person.name);
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+
+### **Why `hashCode()` and `equals()` Are Important Together:**
+
+- **Consistency**: When you override `equals()`, you must override `hashCode()` to ensure that objects that are equal also have the same hash code.
+- **`HashSet` relies on hash codes** to quickly locate an element. If two objects are "equal" but their hash codes are not the same, the `HashSet` will treat them as different objects and store duplicates.
+- **Performance**: A good `hashCode()` method ensures that elements are evenly distributed across buckets, which minimizes collisions and ensures better performance in a `HashSet`.
+
+### **Conclusion:**
+If a `HashSet` is storing duplicate objects, the problem is likely with the implementation of **`hashCode()`** or **`equals()`**. These methods must be correctly overridden to ensure proper functioning. The objects in the set must satisfy the following conditions:
+- If two objects are equal according to `equals()`, they must also have the same hash code.
+- The `hashCode()` method should consider all relevant fields in the object to generate a unique hash code.

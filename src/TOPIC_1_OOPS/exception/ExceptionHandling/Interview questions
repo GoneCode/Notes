@@ -1,0 +1,36 @@
+    Frequently Asked Interview Questions on Exception Handling in Java
+
+1.) What is an exception in Java?
+    An exception is an abnormal condition that disrupts the normal flow of a program during its execution.
+
+2.) Why is exception handling important in Java?
+    Exception handling is crucial because it helps manage unexpected errors, preventing program crashes and ensuring the program can continue running.
+
+3.) What happens if an exception is not handled in Java?
+    If an exception is not handled, it propagates up the call stack until it is caught by an appropriate catch block or causes the program to terminate.
+
+4.) Explain the purpose of the try, catch, and finally blocks.
+    The try block contains code that might throw an exception. The catch block handles the exception.
+    The finally block contains code that is always executed, whether an exception is handled or not.
+
+5.) What is the difference between checked and unchecked exceptions?
+    Checked exceptions are checked at compile-time and must be either caught or declared in the method signature.
+    Unchecked exceptions are not checked at compile-time and do not need to be declared or caught.
+
+6.) Can you have multiple catch blocks for a single try block?
+    Yes, you can have multiple catch blocks to handle different types of exceptions that might be thrown by the try block.
+
+7.) What is the difference between throw and throws in Java?
+    The throw keyword is used to explicitly throw an exception.
+    The throws keyword is used in the method signature to declare that a method might throw one or more exceptions.
+
+8.) What is a finally block and when is it used?
+The finally block is used to execute important code such as closing resources, regardless of whether an exception is handled or not.
+
+9.) What is the Throwable class in Java?
+    The Throwable class is the superclass of all errors and exceptions in Java.
+    It has two main subclasses: Error and Exception.
+
+10.) What is the difference between Error and Exception in Java?
+    Error represents serious problems that a reasonable application should not try to catch, such as OutOfMemoryError.
+    Exception represents conditions that a reasonable application might want to catch.

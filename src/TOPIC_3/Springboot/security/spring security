@@ -1,0 +1,165 @@
+Implementing basic security in a Spring Boot application involves setting up authentication and authorization using Spring Security.
+ Below is a step-by-step guide:
+
+---
+
+### **Step 1: Add Spring Security Dependency**
+Include the Spring Security dependency in your `pom.xml` (for Maven) or `build.gradle` (for Gradle).
+
+#### Maven:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+#### Gradle:
+```groovy
+implementation 'org.springframework.boot:spring-boot-starter-security'
+```
+
+---
+
+### **Step 2: Configure Basic Security**
+Spring Boot automatically applies default security settings when Spring Security is on the classpath.
+
+#### Default Behavior:
+1. A login page is provided at `/login`.
+2. A default user is created with the username `user`.
+3. The default password is printed in the console on application startup:
+   ```
+   Using generated security password: <password>
+   ```
+
+#### Example:
+Run your application and access a protected endpoint. Use `user` as the username and the password printed in the console.
+
+---
+
+### **Step 3: Customizing Basic Authentication**
+To implement custom authentication, define a `SecurityFilterChain` bean.
+
+#### Example: Custom Username and Password
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/public/**").permitAll()  // Public endpoints
+                .anyRequest().authenticated()             // All other endpoints require authentication
+            )
+            .httpBasic(); // Enable basic authentication
+
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+```
+
+---
+
+### **Step 4: Add User Credentials**
+Define in-memory user details or use a database to store users.
+
+#### Example: In-Memory User Details
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+@Configuration
+public class UserDetailsConfig {
+
+    @Bean
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails user = User.builder()
+            .username("admin")
+            .password(passwordEncoder.encode("admin123"))
+            .roles("ADMIN")
+            .build();
+
+        UserDetails user2 = User.builder()
+            .username("user")
+            .password(passwordEncoder.encode("user123"))
+            .roles("USER")
+            .build();
+
+        return new InMemoryUserDetailsManager(user, user2);
+    }
+}
+```
+
+---
+
+### **Step 5: Protect Endpoints**
+Customize access control for specific endpoints.
+
+#### Example: Role-Based Authorization
+```java
+http
+    .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/admin/**").hasRole("ADMIN") // Admin endpoints
+        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN") // User endpoints
+        .requestMatchers("/public/**").permitAll() // Public endpoints
+        .anyRequest().authenticated()
+    );
+```
+
+---
+
+### **Step 6: Testing the Configuration**
+1. Run the application.
+2. Access different endpoints:
+   - `/public`: Should be accessible without authentication.
+   - `/user`: Requires login (`user`/`user123`).
+   - `/admin`: Requires login (`admin`/`admin123`).
+
+---
+
+### **Optional Enhancements**
+1. **Password Encoding:**
+   Use `BCryptPasswordEncoder` to hash passwords securely.
+
+2. **Custom Login Page:**
+   Replace the default login page with a custom one:
+   ```java
+   http.formLogin()
+       .loginPage("/login") // Custom login page
+       .permitAll();
+   ```
+
+3. **Database Authentication:**
+   Store user credentials in a database and configure a `JdbcUserDetailsManager`.
+
+4. **Disable Security for Development:**
+   ```java
+   @Bean
+   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+       http.csrf().disable()
+           .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+       return http.build();
+   }
+   ```
+
+---
+
+Would you like an example of database authentication or custom login/logout functionality?

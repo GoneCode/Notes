@@ -1,0 +1,71 @@
+A **Deque** (pronounced as "deck") is a type of data structure that allows you to add and remove items from **both ends**. The word "Deque" stands for **Double-Ended Queue**.
+
+### Imagine This:
+Think of a **line of people** at a ticket counter. Normally, people join at the back and leave from the front, right? But with a deque, people can:
+1. Join from the front **or** the back.
+2. Leave from the front **or** the back.
+
+It’s like a queue where both ends are open for operations!
+
+---
+
+### Key Features:
+1. **Double-ended**: You can insert or remove elements from both ends (front and back).
+2. **Flexible**: Can behave like:
+   - A **queue** (First In, First Out - FIFO) when you use only one end for insertion and the other for removal.
+   - A **stack** (Last In, First Out - LIFO) when you use only one end for both insertion and removal.
+
+---
+
+### Example in Real Life:
+- A **deque** is like a **deck of cards**:
+  - You can add a card to the top or bottom.
+  - You can remove a card from the top or bottom.
+
+---
+
+### Operations on a Deque:
+1. **Insert at both ends**:
+   - `addFirst(item)` or `addLast(item)`
+2. **Remove from both ends**:
+   - `removeFirst()` or `removeLast()`
+3. **View elements at both ends**:
+   - `peekFirst()` or `peekLast()`
+
+---
+
+### Example in Code (Java):
+```java
+import java.util.Deque;
+import java.util.ArrayDeque;
+
+public class DequeExample {
+    public static void main(String[] args) {
+        Deque<String> deque = new ArrayDeque<>();
+
+        // Add elements to both ends
+        deque.addFirst("Front");
+        deque.addLast("Back");
+
+        // View elements
+        System.out.println("First element: " + deque.peekFirst()); // Output: Front
+        System.out.println("Last element: " + deque.peekLast());   // Output: Back
+
+        // Remove elements from both ends
+        deque.removeFirst(); // Removes "Front"
+        deque.removeLast();  // Removes "Back"
+
+        System.out.println("Deque is empty: " + deque.isEmpty()); // Output: true
+    }
+}
+```
+
+---
+
+### Why Use a Deque?
+1. **Flexibility**: It can be used as a queue, stack, or both.
+2. **Efficiency**: Operations at both ends are fast (constant time).
+
+---
+
+Let me know if you'd like more examples or clarification! 😊

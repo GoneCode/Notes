@@ -1,0 +1,67 @@
+Sure! Let's break down the problem of finding the majority element in an array.
+
+### Problem Statement
+Given an array `nums` of size `n`, the majority element is the element that appears more than `⌊n / 2⌋` times. You may assume that the majority element always exists in the array.
+
+### Example
+- **Input**: `nums = [3, 2, 3]`
+- **Output**: `3`
+- **Explanation**: The element `3` appears more than half the time in the array.
+
+### Steps to Solve
+1. **Count Occurrences**: Use a hash map to count the occurrences of each element in the array.
+2. **Check Majority Condition**: Iterate through the hash map to find the element that appears more than `⌊n / 2⌋` times.
+
+### Code Example in Java
+Here's a simple implementation in Java:
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    public int majorityElement(int[] nums) {
+        Map<Integer, Integer> countMap = new HashMap<>();
+        int majorityCount = nums.length / 2;
+
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+            if (countMap.get(num) > majorityCount) {
+                return num;
+            }
+        }
+        return -1; // This line will never be reached because the majority element always exists
+    }
+}
+```
+
+### Explanation of the Code
+- **Count Occurrences**: The `countMap` keeps track of the number of times each element appears in the array.
+- **Check Majority Condition**: For each element, if its count exceeds `⌊n / 2⌋`, it is returned as the majority element.
+
+### Boyer-Moore Voting Algorithm
+Another efficient way to solve this problem is by using the Boyer-Moore Voting Algorithm, which works in linear time and O(1) space.
+
+### Code Example in Java (Boyer-Moore Voting Algorithm)
+```java
+public class Solution {
+    public int majorityElement(int[] nums) {
+        int count = 0;
+        Integer candidate = null;
+
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+            count += (num == candidate) ? 1 : -1;
+        }
+        return candidate;
+    }
+}
+```
+
+### Explanation of the Boyer-Moore Voting Algorithm
+- **Candidate Selection**: The algorithm maintains a candidate and a count. Initially, the candidate is `null` and the count is `0`.
+- **Count Adjustment**: For each element, if the count is `0`, the current element becomes the candidate. If the element is the same as the candidate, the count is incremented; otherwise, it is decremented.
+- **Majority Element**: The candidate at the end of the iteration is the majority element.
+
+This approach ensures that you find the majority element efficiently. You can find more details and examples [here](https://leetcode.com/problems/majority-element/description/). Happy coding!

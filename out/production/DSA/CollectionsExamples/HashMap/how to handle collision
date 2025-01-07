@@ -1,0 +1,89 @@
+In a `HashMap` in Java, **collisions** occur when two or more keys hash to the same index in the underlying array (bucket).
+ Since the hash map uses a hash function to map keys to array indices, a collision happens if two keys have the same hash code and thus map to the same index.
+
+To handle collisions efficiently, `HashMap` uses the following techniques:
+
+### **1. Chaining (Separate Chaining)**
+This is the default collision handling mechanism in `HashMap`.
+
+- When two keys hash to the same index, instead of overwriting the existing key-value pair, the new key-value pair is stored in a **linked list** (or a balanced tree structure in Java 8 and later) at that index. All the colliding entries are chained together in the same bucket.
+- **Why it works**: This ensures that the hash map can still handle multiple keys that hash to the same index without losing any data.
+
+#### **Chaining Example**:
+If two keys `key1` and `key2` both hash to the same index, their corresponding values will be stored in a linked list at that index.
+
+For example:
+- `bucket[0] = [(key1, value1) -> (key2, value2)]`
+
+### **2. Treeification (Balanced Tree)**
+Starting from **Java 8**, when the number of elements in a bucket exceeds a threshold (typically 8), and the total size of the map is large enough, the linked list is converted into a **balanced binary search tree (BST)** to improve performance.
+
+- **Reason for Treeification**: A linked list has **O(n)** search time when there are many elements in the same bucket, which could degrade performance. By converting the list to a balanced tree, the time complexity of operations on that bucket improves from **O(n)** to **O(log n)**.
+
+#### **Treeification Example**:
+If a bucket has more than 8 elements, it can be converted into a balanced tree:
+- `bucket[0] = [(key1, value1), (key2, value2), ...]` → becomes a balanced BST.
+
+This ensures that searching, inserting, and deleting from that bucket is efficient even with many colliding keys.
+
+### **3. Resizing (Rehashing)**
+To reduce the frequency of collisions and maintain the efficiency of the hash map, a `HashMap` in Java **doubles the capacity** of the underlying array (rehashes) when the load factor threshold is exceeded (default load factor is 0.75).
+
+- **Resizing**: When the number of elements in the `HashMap` exceeds the product of the load factor and the current capacity (i.e., when the map is 75% full), the `HashMap` resizes. During resizing, the map creates a new, larger array and rehashes all the existing keys into the new array.
+- **Why it works**: Resizing reduces the likelihood of collisions by spreading the keys across a larger array.
+
+### **How Resizing Works**
+When a `HashMap` resizes:
+- The capacity is doubled, and all existing keys are rehashed into the new larger array. This reduces the likelihood of collisions and helps maintain O(1) performance for `put`, `get`, and `remove` operations.
+- Rehashing is necessary because the hash codes of the keys might produce different array indices when the array size is changed.
+
+### **Example of Handling Collisions in `HashMap`**
+
+Here’s a simplified example showing how a collision is handled in Java:
+
+```java
+import java.util.HashMap;
+
+public class HashMapCollisionExample {
+    public static void main(String[] args) {
+        // Create a HashMap
+        HashMap<String, String> map = new HashMap<>();
+
+        // Adding key-value pairs to the map
+        map.put("one", "First Element");
+        map.put("two", "Second Element");
+        map.put("three", "Third Element");
+
+        // Inserting a duplicate key which will cause a collision
+        map.put("two", "Updated Second Element");
+
+        // Accessing the values
+        System.out.println("Value for 'one': " + map.get("one"));
+        System.out.println("Value for 'two': " + map.get("two"));
+        System.out.println("Value for 'three': " + map.get("three"));
+    }
+}
+```
+
+In this example:
+- If "one" and "two" happen to hash to the same bucket index, the `HashMap` will store them in a linked list or a balanced tree at that index.
+- When "two" is added a second time with a new value, it will replace the existing value for "two" at that index.
+
+---
+
+### **Performance Considerations**
+
+- **Chaining**: If a hash map uses separate chaining (linked lists or balanced trees), the worst-case performance is O(n) for operations like `get()` or `put()` if all keys hash to the same bucket.
+- **Treeification**: When the linked list becomes too long (more than 8 elements), it gets converted into a balanced binary search tree (BST), which ensures that the time complexity of operations on that bucket remains O(log n) instead of O(n).
+- **Resizing**: When the load factor exceeds the threshold, resizing occurs, which has a time complexity of O(n) for that operation. However, this happens less frequently as the number of elements grows, and the cost is spread over time.
+
+### **Summary of Collision Handling**
+1. **Chaining (Separate Chaining)**: Colliding elements are stored in a linked list or tree at the same index.
+2. **Treeification**: If the linked list at a bucket exceeds a threshold, it is converted into a balanced binary search tree to improve performance.
+3. **Resizing (Rehashing)**: The hash map resizes when the load factor exceeds the threshold, reducing the frequency of collisions.
+
+By using these techniques, Java’s `HashMap` can efficiently handle collisions and maintain constant time complexity for most operations on average.
+
+---
+
+Let me know if you need further clarification or examples! 😊

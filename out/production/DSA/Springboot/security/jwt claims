@@ -1,0 +1,133 @@
+In the context of JWT (JSON Web Tokens), **claims** are pieces of information (key-value pairs) stored within the token payload. These claims convey information about the token's subject (e.g., user data, permissions, or roles) and are used by the server to validate and authorize a user's request.
+
+---
+
+### **Structure of a JWT**
+A JWT consists of three parts:
+1. **Header**: Contains metadata about the token (e.g., the algorithm used for signing).
+2. **Payload**: Contains the claims.
+3. **Signature**: Ensures the token is not tampered with.
+
+Example of a JWT:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTY5MjAwNTAwMH0.xkKI7dQbh9OkY9WJjoX8Er7gDQMdVnMZlZHXlh5LxJY
+```
+
+In this example, the middle section (payload) contains the claims.
+
+---
+
+### **Types of Claims**
+1. **Registered Claims**:
+   - These are predefined and optional claims, commonly used to define the token's structure.
+   - Examples:
+     - **`sub`**: Subject of the token (e.g., the username or user ID).
+     - **`iss`**: Issuer of the token.
+     - **`aud`**: Audience for which the token is intended.
+     - **`exp`**: Expiration time.
+     - **`iat`**: Issued at time.
+     - **`nbf`**: Not before time (token is valid only after this time).
+
+   Example:
+   ```json
+   {
+       "sub": "user1",
+       "iss": "my-app",
+       "aud": "my-app-users",
+       "exp": 1692005000
+   }
+   ```
+
+2. **Public Claims**:
+   - These are custom claims that you define and share publicly.
+   - Ensure they do not conflict with registered claim names.
+
+   Example:
+   ```json
+   {
+       "role": "ADMIN",
+       "organization": "MyCompany"
+   }
+   ```
+
+3. **Private Claims**:
+   - These are custom claims used between parties (issuer and consumer) and are not shared publicly.
+   - Example:
+     ```json
+     {
+         "userId": 12345,
+         "preferences": {
+             "theme": "dark",
+             "language": "en"
+         }
+     }
+     ```
+
+---
+
+### **Example of a JWT Payload with Claims**
+```json
+{
+    "sub": "user123",
+    "name": "John Doe",
+    "role": "USER",
+    "iss": "my-app",
+    "iat": 1692000000,
+    "exp": 1692003600
+}
+```
+
+### **How Claims Are Used**
+1. **Authentication**:
+   - The token may include claims like `sub` (user ID) to identify the user.
+
+2. **Authorization**:
+   - Claims such as `role` or `permissions` determine what the user is allowed to do.
+
+3. **Session Management**:
+   - Claims like `iat` (issued at) and `exp` (expiration) manage the token's validity.
+
+---
+
+### **Extracting Claims in Spring Boot**
+You can extract claims from a JWT using libraries like `io.jsonwebtoken`.
+
+#### Example:
+```java
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+
+public class JwtUtil {
+    private final String SECRET_KEY = "your_secret_key";
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                   .setSigningKey(SECRET_KEY)
+                   .parseClaimsJws(token)
+                   .getBody();
+    }
+
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+}
+```
+
+---
+
+### **Best Practices for Using Claims**
+1. **Minimal Information**:
+   - Include only the required claims to reduce token size and avoid sensitive data exposure.
+
+2. **Encryption**:
+   - If sensitive data must be included, encrypt the JWT or use a secure transport mechanism (e.g., HTTPS).
+
+3. **Validation**:
+   - Always validate claims like `exp` (expiration) and `iss` (issuer) to ensure token integrity.
+
+4. **Custom Claims**:
+   - Use private claims to convey application-specific information.
+
+---
+
+Would you like examples of how to use claims for role-based authorization in Spring Boot?

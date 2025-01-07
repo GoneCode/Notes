@@ -1,0 +1,125 @@
+Java provides several types of **Garbage Collectors** (GCs), each designed for different application needs and performance characteristics.
+Here's an overview of the various types of garbage collectors available in Java:
+
+---
+
+### **1. Serial Garbage Collector**
+- **Description**:
+  - A single-threaded garbage collector that performs all garbage collection tasks sequentially.
+  - Suitable for applications with small data sets and single-threaded environments.
+- **Characteristics**:
+  - Uses only one thread for both Minor and Major GC.
+  - Causes **stop-the-world** pauses during collection.
+- **Best For**:
+  - Applications with small heaps (like desktop or embedded applications).
+- **JVM Option**: `-XX:+UseSerialGC`
+- **Example Use Case**: Small, single-threaded applications with minimal memory requirements.
+
+---
+
+### **2. Parallel Garbage Collector (Throughput Collector)**
+- **Description**:
+  - A multi-threaded garbage collector designed to maximize application throughput by minimizing the time spent in GC.
+- **Characteristics**:
+  - Performs Minor GC using multiple threads.
+  - Major GC (old generation) may still cause stop-the-world pauses, but with multiple threads.
+  - Focuses on reducing the overall execution time of the application rather than minimizing pause times.
+- **Best For**:
+  - Applications with large heaps and multi-threading that prioritize throughput.
+- **JVM Option**: `-XX:+UseParallelGC`
+- **Example Use Case**: Applications like batch processing systems where throughput is critical.
+
+---
+
+### **3. Concurrent Mark-Sweep (CMS) Garbage Collector**
+- **Description**:
+  - A low-latency garbage collector designed to minimize pauses by performing most of its work concurrently with the application threads.
+- **Characteristics**:
+  - Works in phases: initial mark, concurrent mark, pre-cleaning, remark, and sweep.
+  - Can cause fragmentation since it doesn't compact memory.
+  - May lead to **promotion failures** if the old generation fills up during collection.
+- **Best For**:
+  - Applications requiring low-latency and predictable pause times (e.g., interactive applications).
+- **JVM Option**: `-XX:+UseConcMarkSweepGC`
+- **Example Use Case**: Real-time systems or applications with strict response time requirements.
+
+---
+
+### **4. G1 Garbage Collector (Garbage First)**
+- **Description**:
+  - A region-based garbage collector that divides the heap into regions and prioritizes the regions with the most garbage for collection.
+- **Characteristics**:
+  - Balances throughput and low latency.
+  - Performs both Minor and Major GC in a way that reduces pause times.
+  - Compacts memory incrementally to reduce fragmentation.
+  - Replaces the CMS collector as of JDK 9.
+- **Best For**:
+  - Applications with large heaps and a need for predictable pause times.
+- **JVM Option**: `-XX:+UseG1GC`
+- **Example Use Case**: Large-scale web servers or enterprise applications.
+
+---
+
+### **5. Z Garbage Collector (ZGC)**
+- **Description**:
+  - A low-latency garbage collector designed to handle very large heaps (up to terabytes) with minimal pause times.
+- **Characteristics**:
+  - Uses a region-based approach and performs most tasks concurrently.
+  - Pause times are typically in the range of milliseconds, regardless of heap size.
+  - Available in Java 11 and later.
+- **Best For**:
+  - Applications requiring ultra-low pause times and handling large heaps.
+- **JVM Option**: `-XX:+UseZGC`
+- **Example Use Case**: Large-scale, high-performance applications like data analytics platforms.
+
+---
+
+### **6. Shenandoah Garbage Collector**
+- **Description**:
+  - Another low-latency garbage collector, similar to ZGC, designed to reduce pause times by performing concurrent compaction.
+- **Characteristics**:
+  - Suitable for heap sizes ranging from small to large.
+  - Available in Java 12 and later (experimental before JDK 15).
+  - Lower pause times than G1 but slightly higher CPU overhead.
+- **Best For**:
+  - Applications with predictable low latency and moderate to large heaps.
+- **JVM Option**: `-XX:+UseShenandoahGC`
+- **Example Use Case**: Real-time applications requiring consistent performance.
+
+---
+
+### **7. Epsilon Garbage Collector**
+- **Description**:
+  - A no-op garbage collector that does not perform any garbage collection.
+  - Useful for testing and benchmarking purposes.
+- **Characteristics**:
+  - Does not reclaim memory.
+  - Application crashes when memory is exhausted.
+- **Best For**:
+  - Applications used for testing or benchmarking where garbage collection overhead needs to be avoided.
+- **JVM Option**: `-XX:+UseEpsilonGC`
+- **Example Use Case**: Performance testing to analyze application behavior without GC interference.
+
+---
+
+### **Comparison of Garbage Collectors**
+
+| Garbage Collector  | Latency | Throughput | Heap Size        | Pause Time | Use Case                                    |
+|--------------------|---------|------------|------------------|------------|---------------------------------------------|
+| Serial GC          | High    | Low        | Small            | High       | Single-threaded, small applications         |
+| Parallel GC        | Medium  | High       | Small to Large   | Medium     | Batch processing, multi-threaded apps       |
+| CMS GC             | Low     | Medium     | Small to Medium  | Low        | Real-time systems, interactive apps         |
+| G1 GC              | Low     | High       | Medium to Large  | Low        | Large-scale web and enterprise applications |
+| ZGC                | Very Low| Medium     | Large to Huge    | Very Low   | Data analytics, high-performance platforms  |
+| Shenandoah GC      | Very Low| Medium     | Medium to Large  | Very Low   | Real-time apps, predictable response times  |
+| Epsilon GC         | N/A     | N/A        | N/A              | N/A        | Testing and benchmarking only               |
+
+---
+
+### **Choosing the Right Garbage Collector**
+- **Small, single-threaded applications**: Use **Serial GC**.
+- **Throughput-critical applications**: Use **Parallel GC**.
+- **Low-latency, real-time systems**: Use **CMS GC**, **G1 GC**, **ZGC**, or **Shenandoah GC** depending on your heap size and performance needs.
+- **Testing environments**: Use **Epsilon GC**.
+
+---

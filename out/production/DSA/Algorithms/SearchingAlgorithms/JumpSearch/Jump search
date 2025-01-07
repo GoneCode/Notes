@@ -1,0 +1,100 @@
+### **Jump Search Algorithm**
+
+**Jump Search** is an algorithm for searching a **sorted array** or list. It works by **jumping ahead** by a fixed number of steps and then performing a linear search within a block when the target element is found.
+
+---
+
+### **How Jump Search Works:**
+
+1. **Array Setup**:
+   - The array must be **sorted** (either in ascending or descending order).
+
+2. **Jumping**:
+   - Instead of checking every element sequentially (like Linear Search), Jump Search checks elements by jumping ahead by a fixed step size, which is typically \( \sqrt{n} \) where \( n \) is the size of the array.
+   - The idea is to reduce the number of elements that need to be checked by jumping ahead by a block size.
+
+3. **Finding the Block**:
+   - The algorithm repeatedly jumps by step size \( \sqrt{n} \) and checks whether the target value lies within the current block.
+   - If the element at the current position is greater than the target, the algorithm will perform a **linear search** backwards within the block to find the target.
+
+4. **Final Search**:
+   - Once the block is found where the target could lie, the search narrows down and performs a linear search within that block.
+
+---
+
+### **Steps of Jump Search**:
+1. **Choose a block size**: \( \sqrt{n} \), where \( n \) is the length of the array.
+2. **Jump through the array**: Jump ahead by \( \sqrt{n} \) steps each time.
+3. **When the target is within a block**: Perform a linear search within the block to find the target.
+
+---
+
+### **Time Complexity**:
+- **Time Complexity**: \( O(\sqrt{n}) \)
+- **Space Complexity**: \( O(1) \) (since it doesn’t use extra space like some other algorithms).
+
+### **Advantages**:
+- More efficient than linear search for large arrays.
+- Simple and easy to implement.
+
+### **Disadvantages**:
+- Only works on **sorted arrays**.
+- Less efficient than **binary search** for arrays that are already sorted.
+
+---
+
+### **Example**:
+
+Let’s say we have the sorted array:
+`arr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]`
+
+And we are looking for the target value `15`.
+
+### **Step-by-Step Execution**:
+
+1. **Step Size**: \( \sqrt{n} = \sqrt{11} \approx 3 \), so we will jump 3 steps each time.
+2. **First Jump**: Start at index 0, jump to index 3 (value = 7).
+   Since 7 is less than 15, we keep jumping.
+3. **Second Jump**: Jump to index 6 (value = 13).
+   Since 13 is still less than 15, we jump again.
+4. **Third Jump**: Jump to index 9 (value = 19).
+   Now, 19 is greater than 15, so we stop and perform a **linear search** between indices 6 and 9.
+5. **Linear Search**: Between indices 6 and 9, we find 15 at index 8.
+
+---
+
+### **Java Code Implementation**:
+
+```java
+
+```
+
+---
+
+### **Explanation of the Code**:
+1. **Jump Size**: The step size is calculated as \( \sqrt{n} \) (where `n` is the length of the array).
+2. **Jumping Phase**: The `while` loop is used to jump in steps of size \( \sqrt{n} \) until we find the block where the target may lie.
+3. **Linear Search**: Once the block is found, the algorithm performs a linear search inside the block.
+4. **Output**: If the target is found, its index is returned. Otherwise, `-1` is returned.
+
+---
+
+### **Output**:
+
+For the given input:
+```java
+int[] arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21};
+int target = 15;
+```
+
+The output will be:
+```
+Element found at index: 7
+```
+
+---
+
+### **Conclusion**:
+Jump Search is an efficient algorithm for sorted arrays where linear search would be too slow. It reduces the number of elements checked by jumping ahead in steps, followed by a linear search when necessary. This makes it faster than a basic linear search and has a time complexity of \( O(\sqrt{n}) \), making it more suitable for large arrays compared to linear search.
+
+Would you like further clarification or another example?

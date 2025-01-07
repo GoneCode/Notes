@@ -1,0 +1,90 @@
+In Java, **`HashMap`** handles collisions through an internal mechanism that typically combines **chaining** and **tree-based structures** (since Java 8).
+ Here's a breakdown of how collisions are handled:
+
+---
+
+### **1. Chaining (Separate Chaining) in `HashMap`**:
+Initially, `HashMap` used **chaining** as the primary method for collision resolution. In this method, each bucket (array index) stores a **linked list** (or another data structure) of key-value pairs.
+
+- If multiple keys hash to the same index (i.e., a collision occurs), they are stored in a linked list at that index.
+- When searching for a key, the `HashMap` first computes the hash and checks the corresponding bucket. If there are multiple elements in that bucket, it traverses the list to find the correct key.
+
+**Example**:
+- Keys: `101`, `201`
+- Both may hash to the same index (e.g., `index 5`).
+- At `index 5`, there will be a linked list:
+  - `{101, value1} -> {201, value2}`.
+
+---
+
+### **2. Tree-based Collision Handling (Java 8 and Later)**:
+Starting from **Java 8**, when the number of elements in a bucket grows beyond a certain threshold (usually 8), **`HashMap`** switches from using a linked list to a **balanced binary search tree** (typically **red-black tree**). This is done to improve lookup performance in case of high collision.
+
+- **Linked List to Tree Conversion**: If a bucket has too many elements (e.g., 8 or more), the linked list is replaced with a red-black tree, making the search time in that bucket **O(log n)** instead of the typical **O(n)** for a linked list.
+
+- **Threshold for Tree Conversion**: By default, `HashMap` switches to a tree-based structure when the number of elements in a bucket exceeds 8, and the `HashMap` itself has more than 64 buckets.
+
+---
+
+### **How `HashMap` Resolves Collisions**:
+1. **When Adding**:
+   - Compute the hash of the key using the `hashCode()` method.
+   - If the computed hash points to an empty slot in the array, store the key-value pair there.
+   - If the slot is already occupied, the `HashMap` handles the collision based on the number of entries at that index:
+     - **Chaining**: Adds the key-value pair to a linked list.
+     - **Tree-based**: Converts the linked list to a red-black tree (if necessary).
+
+2. **When Searching**:
+   - Compute the hash of the key and check the corresponding bucket.
+   - If the bucket contains a single element, return it.
+   - If it contains multiple elements (linked list or tree), search through the list/tree to find the correct key-value pair.
+
+---
+
+### **Code Example**:
+
+```java
+import java.util.HashMap;
+
+public class HashMapCollisionHandling {
+    public static void main(TOPIC_1_OOPS.javaOOPSConcepts.String[] args) {
+        HashMap<Integer, TOPIC_1_OOPS.javaOOPSConcepts.String> map = new HashMap<>();
+
+        // Inserting key-value pairs
+        map.put(101, "Alice");
+        map.put(201, "Bob"); // Possible collision with key 101 (same hash index)
+        map.put(301, "Charlie");
+
+        // Print the map contents
+        System.out.println("HashMap contents: " + map);
+
+        // Searching for a key
+        System.out.println("Value for key 101: " + map.get(101));
+        System.out.println("Value for key 201: " + map.get(201));
+        System.out.println("Value for key 301: " + map.get(301));
+    }
+}
+```
+
+---
+
+### **Handling Collisions in `HashMap` Internally**:
+- When inserting a new element, the `HashMap` checks whether the computed hash for a key points to an already occupied bucket.
+- If there is a **collision**, it uses the following mechanism:
+  - For **small numbers of collisions**, it chains the key-value pair to the existing list.
+  - For **larger numbers of collisions** (i.e., when the number of elements in a bucket exceeds a threshold), it switches to a **tree structure** for efficient lookups.
+
+---
+
+### **Performance Consideration**:
+- **Chaining**: While this is a fast solution for collisions, its performance can degrade when too many elements hash to the same index, as searching through a long linked list takes time proportional to the number of elements in the list (\( O(n) \)).
+- **Tree Structure**: The red-black tree improves worst-case performance to \( O(\log n) \), making searches faster even in cases with many collisions.
+
+---
+
+### **Key Takeaways**:
+- **Chaining** is the default method for collision handling.
+- **Red-black tree** is used in case of too many collisions to maintain \( O(\log n) \) performance.
+- **`HashMap`'s collision handling mechanism** ensures that even in the case of high collisions, performance is optimized.
+
+Would you like to see a more advanced example or further details on how the hash function works in `HashMap`?

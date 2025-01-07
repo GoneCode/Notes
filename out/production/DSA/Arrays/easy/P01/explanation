@@ -1,0 +1,106 @@
+The **Two Sum problem** is a popular coding interview question on LeetCode. Here's a detailed explanation:
+
+---
+
+### **Problem Description**
+You are given an array of integers `nums` and an integer `target`. You need to find **two numbers** in the array such that their sum equals the given `target`.
+
+Return the **indices** of these two numbers.
+
+You may assume that:
+- Each input has exactly **one solution**, and you may not use the same element twice.
+- The solution can be returned in any order.
+
+---
+
+### **Example**
+
+#### Input:
+```plaintext
+nums = [2, 7, 11, 15]
+target = 9
+```
+
+#### Output:
+```plaintext
+[0, 1]
+```
+
+#### Explanation:
+The numbers `2` (at index 0) and `7` (at index 1) add up to `9`, so you return `[0, 1]`.
+
+---
+
+### **Approach 1: Brute Force**
+In this approach, you check all possible pairs of numbers to see if their sum equals the target.
+
+#### Steps:
+1. Iterate through the array with two nested loops.
+2. For each pair `(i, j)` where `i < j`, check if `nums[i] + nums[j] == target`.
+3. If true, return `[i, j]`.
+
+#### Code:
+```java
+public int[] twoSum(int[] nums, int target) {
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[i] + nums[j] == target) {
+                return new int[] {i, j};
+            }
+        }
+    }
+    return new int[] {}; // No solution (won't happen per the problem)
+}
+```
+
+#### Time Complexity:
+- **O(n²)**: Two nested loops.
+- Space Complexity: **O(1)**.
+
+---
+
+### **Approach 2: Hash Map (Optimal Solution)**
+This approach uses a hash map to store elements and their indices for quick lookups.
+
+#### Steps:
+1. Create a hash map to store numbers and their indices.
+2. Iterate through the array:
+   - Calculate the `complement` as `target - nums[i]`.
+   - Check if the `complement` exists in the hash map.
+   - If it does, return the indices `[i, map.get(complement)]`.
+   - Otherwise, add the current number and its index to the hash map.
+
+#### Code:
+```java
+import java.util.HashMap;
+
+public int[] twoSum(int[] nums, int target) {
+    HashMap<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[] {map.get(complement), i};
+        }
+        map.put(nums[i], i);
+    }
+    return new int[] {}; // No solution (won't happen per the problem)
+}
+```
+
+#### Explanation:
+- If `target = 9` and `nums = [2, 7, 11, 15]`:
+  - At `i = 0`: `complement = 9 - 2 = 7`. `7` is not in the map, so add `{2: 0}`.
+  - At `i = 1`: `complement = 9 - 7 = 2`. `2` is in the map, so return `[0, 1]`.
+
+#### Time Complexity:
+- **O(n)**: Single loop with constant time map operations.
+- Space Complexity: **O(n)**: Hash map storage.
+
+---
+
+### **Key Points**
+1. The brute-force approach is easy to implement but inefficient for large arrays.
+2. The hash map approach is efficient and commonly used in interviews.
+3. Always validate the assumptions, e.g., "exactly one solution exists."
+
+Would you like a step-by-step explanation of the hash map logic or its extension to handle similar problems?

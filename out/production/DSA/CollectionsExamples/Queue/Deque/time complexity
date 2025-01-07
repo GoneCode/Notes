@@ -1,0 +1,57 @@
+The **time complexity of a Deque** depends on the specific operations and the implementation used (e.g., `ArrayDeque` or `LinkedList` in Java). Here's a breakdown:
+
+---
+
+### **1. Common Deque Operations and Their Complexity**
+
+| Operation                      | Time Complexity | Description                                                                 |
+|--------------------------------|-----------------|-----------------------------------------------------------------------------|
+| **Add to Front (`addFirst`)**  | O(1)            | Adds an element to the front of the deque.                                 |
+| **Add to Back (`addLast`)**    | O(1)            | Adds an element to the back of the deque.                                  |
+| **Remove from Front (`removeFirst`)** | O(1)     | Removes the first element from the deque.                                  |
+| **Remove from Back (`removeLast`)**   | O(1)     | Removes the last element from the deque.                                   |
+| **Peek Front (`peekFirst`)**   | O(1)            | Retrieves the first element without removing it.                           |
+| **Peek Back (`peekLast`)**     | O(1)            | Retrieves the last element without removing it.                            |
+| **Contains (`contains`)**      | O(n)            | Searches for an element in the deque (linear search).                      |
+| **Iteration**                  | O(n)            | Iterates through all elements in the deque.                                |
+
+---
+
+### **2. Java Implementations of Deque**
+#### **a) `ArrayDeque`**
+- **Backed by a Resizable Array**:
+  - Fast operations at both ends since there's no need to shift elements.
+  - Resizing (when capacity is exceeded) is O(n) but happens infrequently.
+
+| Operation                      | Time Complexity |
+|--------------------------------|-----------------|
+| Add/Remove at Front/Back       | O(1)            |
+| Random Access/Search           | O(n)            |
+| Iteration                      | O(n)            |
+
+#### **b) `LinkedList`**
+- **Backed by a Doubly Linked List**:
+  - Each node stores a reference to the previous and next nodes.
+  - Efficient for adding/removing at both ends but slower for searching.
+
+| Operation                      | Time Complexity |
+|--------------------------------|-----------------|
+| Add/Remove at Front/Back       | O(1)            |
+| Random Access/Search           | O(n)            |
+| Iteration                      | O(n)            |
+
+---
+
+### **3. Key Comparisons**
+- **`ArrayDeque`** is generally preferred over `LinkedList` because it uses less memory (no node overhead) and is faster for most operations.
+- Use **`LinkedList`** only when frequent insertions or deletions happen in the middle of the deque.
+
+---
+
+### **Real-World Insights**
+- For real-time systems or applications requiring predictable performance, the **O(1)** operations (add, remove, peek) make Deque an excellent choice.
+- Choose the implementation based on your use case:
+  - `ArrayDeque` for general-purpose, efficient Deques.
+  - `LinkedList` if you require insertion/deletion at arbitrary positions.
+
+Let me know if you'd like examples or further clarification! 😊

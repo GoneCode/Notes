@@ -1,0 +1,39 @@
+1.) Lambda Expressions
+    These allow you to write concise and functional-style code. They enable you to treat functionality as a method argument or pass code as data
+
+2.) Method References
+    These provide a way to refer to methods without invoking them. They are compact and easy-to-read lambda expressions for methods that already have a name.
+
+3.) Functional Interfaces
+
+    An interface with a single abstract method, known as a Single Abstract Method (SAM) interface. Examples include Runnable, Callable, and custom interfaces.
+
+4.) Stream API
+
+    This provides a way to process sequences of elements, such as collections, in a functional style. It supports operations like map, filter, and reduce.
+
+5.) Default Methods
+
+    These allow you to add new methods to interfaces without breaking the existing implementations. They are defined with the default keyword.
+
+
+6.) Optional Class
+
+    This is used to handle null values more gracefully and avoid NullPointerException. It provides methods to check the presence of a value.
+
+7.) New Date and Time API
+
+    The java.time package offers a comprehensive and improved way to handle date and time, replacing the old java.util.Date and java.util.Calendar classes.
+
+8.) Nashorn JavaScript Engine
+
+    This allows you to run JavaScript code on the Java Virtual Machine (JVM).
+
+9.) Base64 Encoding and Decoding
+
+    Java 8 includes a utility class for Base64 encoding and decoding.
+
+10.) Parallel Array Sorting
+
+    This feature allows you to sort arrays in parallel for better performance on multi-core processors.
+

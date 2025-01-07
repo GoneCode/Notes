@@ -1,0 +1,71 @@
+                    Strings in Java
+
+Strings in Java are objects that represent sequences of characters.
+They are widely used in Java programming for storing and manipulating text.
+
+Key Features:
+1.) Immutability:
+    Once a String object is created, it cannot be changed. Any modification to a String results in the creation of a new String object.
+    eg: String str = "Hello"; str = str.concat(" World"); // Creates a new String "Hello World"
+
+2.) String Pool:
+    Java maintains a pool of strings to optimize memory usage. When a new string is created, the JVM checks the pool first.
+    If the string already exists, the reference to the existing string is returned.
+    eg: String str1 = "Hello"; String str2 = "Hello"; // str1 and str2 point to the same object in the pool
+
+3.) Concatenation:
+    Strings can be concatenated using the + operator or the concat() method.
+    eg:
+        String str1 = "Hello";
+        String str2 = "World";
+        String result = str1 + " " + str2; // Using + operator
+        String result2 = str1.concat(" ").concat(str2); // Using concat() method
+
+4.) Length:
+    The length() method returns the number of characters in a string.
+    String str = "Hello"; int len = str.length(); // len is 5
+
+5.) Substring:
+    The substring() method extracts a part of the string.
+    eg:
+    String str = "Hello World";
+    String sub = str.substring(0, 5); // sub is "Hello"
+
+6.) Comparison:
+    Strings can be compared using the equals(), equalsIgnoreCase(), and compareTo() methods.
+    eg:
+        String str1 = "Hello";
+        String str2 = "hello";
+        boolean isEqual = str1.equals(str2); // false
+        boolean isEqualIgnoreCase = str1.equalsIgnoreCase(str2); // true
+        int comparison = str1.compareTo(str2); // Negative value
+
+7.) Searching:
+    Methods like indexOf() and lastIndexOf() are used to search for characters or substrings within a string.
+    eg:
+        String str = "Hello World";
+        int index = str.indexOf('o'); // index is 4
+        int lastIndex = str.lastIndexOf('o'); // lastIndex is 7
+
+8.) Case Conversion:
+    Methods like toUpperCase() and toLowerCase() are used to convert the case of characters in a string.
+    eg:
+         String str = "Hello World";
+         String upper = str.toUpperCase(); // "HELLO WORLD"
+         String lower = str.toLowerCase(); // "hello world"
+
+9.) Trimming:
+    The trim() method removes leading and trailing whitespace from a string.
+    eg: String str = "  Hello World  ";
+        String trimmed = str.trim(); // "Hello World"
+
+10.) Splitting:
+      The split() method splits a string into an array of substrings based on a given delimiter.
+      eg:   String str = "Hello,World,Java";
+            String[] parts = str.split(","); // ["Hello", "World", "Java"]
+
+
+
+
+
+

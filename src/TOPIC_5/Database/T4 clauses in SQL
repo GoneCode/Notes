@@ -1,0 +1,202 @@
+In SQL, **clauses** are keywords or parts of a query that modify its behavior. Clauses are used to perform specific tasks like filtering, sorting, grouping, and combining data.
+Here’s an overview of the most common SQL clauses with examples:
+
+---
+
+### **1. SELECT Clause**
+The `SELECT` clause retrieves specific columns or all columns from a table.
+
+#### Example
+```sql
+SELECT name, salary FROM Employees;
+```
+- Retrieves the `name` and `salary` columns from the `Employees` table.
+
+---
+
+### **2. FROM Clause**
+The `FROM` clause specifies the table(s) from which data is retrieved.
+
+#### Example
+```sql
+SELECT * FROM Employees;
+```
+- Retrieves all columns from the `Employees` table.
+
+---
+
+### **3. WHERE Clause**
+The `WHERE` clause filters rows based on conditions.
+
+#### Example
+```sql
+SELECT * FROM Employees WHERE department = 'Engineering';
+```
+- Retrieves employees only from the `Engineering` department.
+
+---
+
+### **4. GROUP BY Clause**
+The `GROUP BY` clause groups rows that have the same values in specified columns, often used with aggregate functions.
+
+#### Example
+```sql
+SELECT department, AVG(salary) AS average_salary
+FROM Employees
+GROUP BY department;
+```
+- Groups employees by department and calculates the average salary for each group.
+
+---
+
+### **5. HAVING Clause**
+The `HAVING` clause filters groups created by the `GROUP BY` clause, based on aggregate conditions.
+
+#### Example
+```sql
+SELECT department, AVG(salary) AS average_salary
+FROM Employees
+GROUP BY department
+HAVING AVG(salary) > 60000;
+```
+- Displays departments with an average salary greater than 60,000.
+
+---
+
+### **6. ORDER BY Clause**
+The `ORDER BY` clause sorts the results in ascending (`ASC`) or descending (`DESC`) order.
+
+#### Example
+```sql
+SELECT name, salary FROM Employees
+ORDER BY salary DESC;
+```
+- Retrieves employees' names and salaries, sorted by salary in descending order.
+
+---
+
+### **7. LIMIT Clause**
+The `LIMIT` clause restricts the number of rows returned in the result set.
+
+#### Example
+```sql
+SELECT * FROM Employees LIMIT 3;
+```
+- Retrieves the first 3 rows from the `Employees` table.
+
+---
+
+### **8. JOIN Clause**
+The `JOIN` clause combines rows from two or more tables based on related columns.
+
+#### Example
+```sql
+SELECT e.name, d.location
+FROM Employees e
+JOIN Departments d ON e.department = d.name;
+```
+- Combines `Employees` and `Departments` to show employee names and their department locations.
+
+---
+
+### **9. UNION Clause**
+The `UNION` clause combines the results of two or more `SELECT` queries, removing duplicates by default.
+
+#### Example
+```sql
+SELECT name FROM Employees
+UNION
+SELECT name FROM Managers;
+```
+- Combines employee and manager names, removing duplicates.
+
+---
+
+### **10. DISTINCT Clause**
+The `DISTINCT` clause removes duplicate rows from the result set.
+
+#### Example
+```sql
+SELECT DISTINCT department FROM Employees;
+```
+- Retrieves unique department names from the `Employees` table.
+
+---
+
+### **11. IN Clause**
+The `IN` clause filters rows that match any value in a specified list.
+
+#### Example
+```sql
+SELECT * FROM Employees WHERE department IN ('Engineering', 'Finance');
+```
+- Retrieves employees in the `Engineering` or `Finance` departments.
+
+---
+
+### **12. BETWEEN Clause**
+The `BETWEEN` clause filters rows within a specified range.
+
+#### Example
+```sql
+SELECT * FROM Employees WHERE salary BETWEEN 60000 AND 80000;
+```
+- Retrieves employees whose salaries fall between 60,000 and 80,000.
+
+---
+
+### **13. LIKE Clause**
+The `LIKE` clause filters rows based on a pattern match.
+
+#### Example
+```sql
+SELECT * FROM Employees WHERE name LIKE 'A%';
+```
+- Retrieves employees whose names start with the letter `A`.
+
+---
+
+### **14. EXISTS Clause**
+The `EXISTS` clause checks for the existence of rows in a subquery.
+
+#### Example
+```sql
+SELECT * FROM Employees WHERE EXISTS (
+    SELECT 1 FROM Departments WHERE location = 'New York'
+);
+```
+- Retrieves employees if there's a department located in New York.
+
+---
+
+### **15. AS Clause**
+The `AS` clause assigns aliases to columns or tables, making them easier to reference.
+
+#### Example
+```sql
+SELECT name AS employee_name, salary AS employee_salary FROM Employees;
+```
+- Renames `name` and `salary` columns for readability.
+
+---
+
+### **Summary**
+| Clause      | Function                                          |
+|-------------|---------------------------------------------------|
+| `SELECT`    | Retrieves data from a table                      |
+| `FROM`      | Specifies the table(s) to query                  |
+| `WHERE`     | Filters rows based on a condition                |
+| `GROUP BY`  | Groups rows for aggregation                      |
+| `HAVING`    | Filters groups                                   |
+| `ORDER BY`  | Sorts the result set                             |
+| `LIMIT`     | Limits the number of rows returned               |
+| `JOIN`      | Combines rows from multiple tables               |
+| `UNION`     | Combines result sets from multiple queries       |
+| `DISTINCT`  | Removes duplicate rows                           |
+| `IN`        | Matches rows against a list of values            |
+| `BETWEEN`   | Filters rows within a range                      |
+| `LIKE`      | Filters rows based on pattern matching           |
+| `EXISTS`    | Checks if a subquery returns any rows            |
+| `AS`        | Creates aliases for columns or tables            |
+
+Would you like examples of combining multiple clauses in a single query?

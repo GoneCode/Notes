@@ -1,0 +1,39 @@
+In Java, exceptions are represented by a hierarchy of classes, all of which are subclasses of the Throwable class.
+The Throwable class has two main subclasses: Error and Exception.
+
+Diagram of Exception Hierarchy
+--------------------------------
+                Throwable
+                   ├── Error
+                   │    ├── OutOfMemoryError
+                   │    └── StackOverflowError
+                   └── Exception
+                        ├── RuntimeException
+                        │    ├── NullPointerException
+                        │    ├── ArrayIndexOutOfBoundsException
+                        │    └── ArithmeticException
+                        └── Checked Exceptions
+                             ├── IOException
+                             ├── SQLException
+                             └── ClassNotFoundException
+
+
+1. Throwable
+The superclass of all errors and exceptions in Java.
+
+2. Error
+Represents serious problems that a reasonable application should not try to catch.
+Errors are typically external to the application and indicate issues with the runtime environment (e.g., OutOfMemoryError, StackOverflowError).
+
+3. Exception
+Represents conditions that a reasonable application might want to catch.
+The Exception class has two main subclasses: RuntimeException and other checked exceptions.
+
+    a. RuntimeException
+        Represents exceptions that can occur during the normal operation of the Java Virtual Machine (JVM).
+        These exceptions are unchecked, meaning they do not need to be declared in a method's throws clause.
+        Examples include NullPointerException, ArrayIndexOutOfBoundsException, and ArithmeticException.
+
+    b. Checked Exceptions
+        Represents exceptions that must be declared in a method's throws clause if they can be thrown by the method.
+        These exceptions are checked at compile-time. Examples include IOException, SQLException, and ClassNotFoundException.

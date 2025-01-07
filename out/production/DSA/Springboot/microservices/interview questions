@@ -1,0 +1,184 @@
+### **Microservices Interview Questions**
+
+Here’s a categorized list of common **microservices** interview questions:
+
+---
+
+### **Basic Concepts**
+1. **What are microservices? How are they different from monolithic architecture?**
+   - Answer: Microservices is an architectural style where an application is composed of small, independent services. Each service focuses on a specific business capability, unlike monolithic architectures where the application is a single unit.
+
+2. **What are the key characteristics of microservices?**
+   - Independently deployable.
+   - Decentralized data management.
+   - Organized around business capabilities.
+   - Lightweight communication (e.g., REST, gRPC).
+   - Resilient and scalable.
+
+3. **What are the advantages of microservices architecture?**
+   - Scalability.
+   - Independent deployments.
+   - Fault isolation.
+   - Technology diversity.
+
+4. **What are the disadvantages of microservices?**
+   - Increased complexity.
+   - Network latency.
+   - Data consistency challenges.
+   - More extensive monitoring and testing required.
+
+5. **When would you choose microservices over a monolithic architecture?**
+   - When scalability, flexibility, and independent deployments are priorities.
+   - For teams working on different business functionalities.
+
+---
+
+### **Design and Architecture**
+6. **How do you design a microservices-based application?**
+   - Identify business capabilities.
+   - Define service boundaries.
+   - Choose the communication protocol (e.g., REST, gRPC).
+   - Decentralize data management.
+   - Implement APIs for service communication.
+
+7. **What is Domain-Driven Design (DDD), and how does it relate to microservices?**
+   - DDD focuses on modeling software around business domains.
+   - Each microservice can represent a bounded context in DDD.
+
+8. **How do you handle data consistency in microservices?**
+   - Use eventual consistency.
+   - Implement distributed transactions using the Saga or 2PC pattern.
+
+9. **What is API Gateway, and why is it used in microservices?**
+   - An API Gateway is an entry point for clients to interact with multiple services. It handles routing, authentication, rate limiting, and response aggregation.
+
+10. **How do you ensure loose coupling between microservices?**
+    - Use asynchronous communication (e.g., message queues).
+    - Avoid shared databases.
+    - Implement well-defined contracts using APIs.
+
+---
+
+### **Communication**
+11. **What are the different communication mechanisms in microservices?**
+    - **Synchronous**: REST, gRPC, GraphQL.
+    - **Asynchronous**: Kafka, RabbitMQ, AMQP, SQS.
+
+12. **What are the challenges of synchronous communication in microservices?**
+    - Increased latency.
+    - Tight coupling.
+    - Risk of cascading failures.
+
+13. **What is a circuit breaker in microservices?**
+    - A pattern to prevent cascading failures by temporarily halting requests to a failing service. Popular implementations include Netflix Hystrix and Resilience4j.
+
+14. **What is service discovery? How is it implemented?**
+    - Service discovery allows services to locate each other dynamically.
+    - Implemented using tools like Eureka, Consul, or Kubernetes.
+
+15. **What are the differences between REST and gRPC?**
+    - REST is text-based (JSON/XML), while gRPC uses Protocol Buffers for binary serialization.
+    - gRPC is faster and suitable for inter-service communication, while REST is better for public-facing APIs.
+
+---
+
+### **Data Management**
+16. **How do you manage databases in microservices?**
+    - Each service has its own database (database per service pattern).
+    - Use APIs for cross-service data access.
+
+17. **What is the Saga pattern?**
+    - A distributed transaction pattern where a sequence of local transactions is coordinated using events or commands.
+
+18. **How do you handle read consistency in microservices?**
+    - Use **CQRS (Command Query Responsibility Segregation)** to separate read and write models.
+
+19. **How do you perform schema migrations in microservices?**
+    - Use database versioning tools like Flyway or Liquibase.
+    - Roll out migrations incrementally.
+
+---
+
+### **Resilience and Scalability**
+20. **What is the difference between scaling vertically and horizontally?**
+    - **Vertical Scaling**: Adding more resources to a single machine.
+    - **Horizontal Scaling**: Adding more machines or instances.
+
+21. **What is load balancing, and how is it implemented in microservices?**
+    - Distributes incoming requests across multiple instances.
+    - Implemented using tools like NGINX, AWS ALB, or Kubernetes Ingress.
+
+22. **How do you implement fault tolerance in microservices?**
+    - Retry mechanisms.
+    - Circuit breakers.
+    - Fallbacks.
+    - Redundancy.
+
+23. **How do you handle service failures in microservices?**
+    - Implement timeouts and retries.
+    - Use monitoring tools like Prometheus and alerting systems like Grafana.
+
+24. **What is the role of caching in microservices?**
+    - Reduce database load and improve response time.
+    - Use tools like Redis or Memcached.
+
+---
+
+### **Security**
+25. **How do you secure microservices?**
+    - Use HTTPS for communication.
+    - Implement authentication and authorization (e.g., OAuth2, JWT).
+    - Validate incoming data.
+    - Use API Gateways for centralized security.
+
+26. **What is OAuth2, and how does it work in microservices?**
+    - OAuth2 is an authorization framework.
+    - It delegates access to services using access tokens.
+
+27. **What are some best practices for securing microservices?**
+    - Implement rate limiting.
+    - Use encryption for sensitive data.
+    - Monitor security vulnerabilities.
+
+---
+
+### **Monitoring and Deployment**
+28. **What tools are commonly used for monitoring microservices?**
+    - Prometheus, Grafana, ELK Stack (Elasticsearch, Logstash, Kibana), Zipkin, Jaeger.
+
+29. **What is distributed tracing?**
+    - A method to trace requests across services to diagnose performance issues.
+    - Tools: Zipkin, Jaeger.
+
+30. **What are the deployment strategies for microservices?**
+    - Rolling deployments.
+    - Blue-green deployments.
+    - Canary deployments.
+
+31. **What is containerization, and why is it important for microservices?**
+    - Encapsulates services into lightweight containers (e.g., Docker).
+    - Ensures consistency across environments and simplifies deployments.
+
+32. **What is Kubernetes, and how does it help with microservices?**
+    - A container orchestration platform.
+    - Automates deployment, scaling, and management of containerized applications.
+
+---
+
+### **Testing**
+33. **How do you test microservices?**
+    - **Unit Tests**: Test individual components.
+    - **Integration Tests**: Test communication between services.
+    - **Contract Tests**: Ensure API compatibility.
+    - **End-to-End Tests**: Test the system as a whole.
+
+34. **What is consumer-driven contract testing?**
+    - A method to test if the provider service meets the expectations of the consumer.
+    - Tool: Pact.
+
+35. **How do you mock external services during testing?**
+    - Use tools like WireMock or Mockito.
+
+---
+
+Would you like detailed explanations or examples for any of these questions?

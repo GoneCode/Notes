@@ -1,0 +1,120 @@
+The **Merge Sorted Arrays** problem is a common interview question. Here's a detailed explanation of the problem and solutions.
+
+---
+
+### **Problem Description**
+You are given **two sorted arrays**, `nums1` and `nums2`, and two integers `m` and `n`:
+- `nums1` has a size of `m + n`, where the first `m` elements denote the actual elements of the array, and the last `n` elements are reserved as extra space.
+- `nums2` has a size of `n` and contains `n` sorted elements.
+
+**Task**: Merge `nums2` into `nums1` so that `nums1` becomes a single sorted array.
+
+---
+
+### **Constraints**
+1. The inputs `nums1` and `nums2` are both sorted in non-decreasing order.
+2. You need to modify `nums1` **in place**.
+
+---
+
+### **Example**
+
+#### Input:
+```plaintext
+nums1 = [1, 2, 3, 0, 0, 0], m = 3
+nums2 = [2, 5, 6], n = 3
+```
+
+#### Output:
+```plaintext
+nums1 = [1, 2, 2, 3, 5, 6]
+```
+
+#### Explanation:
+- Merge the elements of `nums2` into the first `m` elements of `nums1` while keeping the array sorted.
+
+---
+
+### **Approach 1: Two Pointers from the End (Optimal Solution)**
+
+#### Steps:
+1. Use two pointers:
+   - One pointer (`i`) starting from the end of the first `m` elements in `nums1`.
+   - Another pointer (`j`) starting from the end of `nums2`.
+2. A third pointer (`k`) starts from the last position in `nums1` (end of the extra space).
+3. Compare the elements at `nums1[i]` and `nums2[j]`:
+   - Place the larger element at `nums1[k]`.
+   - Move the respective pointer (`i` or `j`) and decrement `k`.
+4. If any elements remain in `nums2`, copy them into `nums1`.
+
+#### Code:
+```java
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+    int i = m - 1; // Pointer for nums1
+    int j = n - 1; // Pointer for nums2
+    int k = m + n - 1; // Pointer for final position in nums1
+
+    // Merge nums1 and nums2 from the back
+    while (i >= 0 && j >= 0) {
+        if (nums1[i] > nums2[j]) {
+            nums1[k--] = nums1[i--];
+        } else {
+            nums1[k--] = nums2[j--];
+        }
+    }
+
+    // If any elements remain in nums2
+    while (j >= 0) {
+        nums1[k--] = nums2[j--];
+    }
+}
+```
+
+#### Explanation:
+- If `nums1 = [1, 2, 3, 0, 0, 0], nums2 = [2, 5, 6], m = 3, n = 3`:
+  - Start comparing from the end:
+    - `nums1[2] (3)` vs `nums2[2] (6)`: Place `6` at `nums1[5]`.
+    - `nums1[2] (3)` vs `nums2[1] (5)`: Place `5` at `nums1[4]`.
+    - `nums1[2] (3)` vs `nums2[0] (2)`: Place `3` at `nums1[3]`.
+    - Place remaining `2` at `nums1[2]` and `nums1[1]` accordingly.
+
+#### Time Complexity:
+- **O(m + n)**: Each element is processed once.
+- Space Complexity: **O(1)**: No extra space used beyond pointers.
+
+---
+
+### **Approach 2: Merge and Sort (Simpler but Less Efficient)**
+
+#### Steps:
+1. Copy the first `m` elements of `nums1` into a temporary array.
+2. Merge `nums1` and `nums2` into a new array and sort it.
+3. Copy the sorted elements back into `nums1`.
+
+#### Code:
+```java
+import java.util.Arrays;
+
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+    System.arraycopy(nums2, 0, nums1, m, n); // Copy nums2 into nums1's extra space
+    Arrays.sort(nums1); // Sort the entire array
+}
+```
+
+#### Explanation:
+- This approach is straightforward but uses built-in sorting, which is not efficient for this specific problem.
+
+#### Time Complexity:
+- **O((m + n) log(m + n))**: Sorting the combined array.
+- Space Complexity: **O(1)**.
+
+---
+
+### **Key Insights**
+1. The two-pointer approach is optimal because it avoids unnecessary sorting and minimizes operations.
+2. Always merge from the **end of the arrays** to avoid overwriting elements in `nums1`.
+3. Edge cases to consider:
+   - One array is empty (e.g., `nums1 = [], nums2 = [1, 2, 3]`).
+   - Both arrays are empty.
+
+Would you like to explore variations of this problem, like merging k sorted arrays?

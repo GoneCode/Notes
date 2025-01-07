@@ -1,0 +1,93 @@
+The **`HashSet`** in Java is a part of the **`java.util`** package and implements the **`Set`** interface. It is backed by a **`HashMap`**, meaning its internal workings rely on a hash-based data structure. Let’s dive into the **internal working** of a `HashSet` to understand how it manages elements, ensures uniqueness, and performs operations like adding, removing, and searching.
+
+### **Key Properties of HashSet**
+1. **Unique Elements**: A `HashSet` does not allow duplicate elements. It ensures that each element in the set is unique by using hashing.
+2. **No Defined Order**: The order of elements in a `HashSet` is not guaranteed. Elements may appear in a different order each time the set is iterated.
+3. **Backed by HashMap**: Internally, `HashSet` uses a `HashMap` (with a dummy value) to store the elements.
+
+### **Internal Data Structure:**
+- A `HashSet` is internally backed by a **`HashMap`**.
+- Every element in the set is stored as a key in the `HashMap`, and the corresponding value is a **dummy value** (often `Boolean.TRUE` or `Object`).
+
+### **How HashSet Works:**
+
+1. **Adding Elements:**
+   - When you add an element to a `HashSet`, it calculates the **hashcode** of the element.
+   - The hashcode is used to determine the bucket in the underlying `HashMap` where the element should be placed.
+   - If the element is already present (i.e., the `HashMap` already has a key with the same hashcode), it will not be added again because `HashSet` does not allow duplicates.
+
+2. **Checking for Uniqueness (Avoiding Duplicates):**
+   - Before adding an element, `HashSet` first checks whether the element is already present by using the `equals()` method.
+   - If the element already exists (based on hashcode and `equals()`), it is not added to the set.
+   - This is why it is important that the **`hashCode()`** and **`equals()`** methods are implemented correctly for the elements in the set.
+
+3. **Removing Elements:**
+   - To remove an element, `HashSet` calculates the hashcode of the element and searches for it in the corresponding bucket.
+   - If found, it is removed from the set by calling the `remove()` method of the underlying `HashMap`.
+
+4. **Searching for Elements:**
+   - When checking if an element exists in the set, `HashSet` uses the `contains()` method, which internally calls `containsKey()` of the underlying `HashMap`.
+   - The hashcode of the element is used to locate the correct bucket, and then `equals()` is used to confirm the match.
+
+### **How `HashSet` Handles Hashing:**
+
+- **Hashing**: The core idea of a `HashSet` is to use a **hash table** (backed by `HashMap`), which allows for fast insertion and lookup operations (O(1) on average).
+  - **HashCode**: When you add an element, `HashSet` uses the **`hashCode()`** method of the element to determine the bucket where the element should go.
+  - **Equals**: In cases where multiple elements have the same hashcode (called a **hash collision**), the `equals()` method is used to check if the element already exists in that bucket.
+
+### **Example:**
+Let’s look at a simplified example to understand the flow:
+
+```java
+import java.util.HashSet;
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+
+        // Add elements
+        set.add("Apple");
+        set.add("Banana");
+        set.add("Orange");
+
+        // Attempt to add a duplicate
+        set.add("Apple");
+
+        // Check if "Apple" is in the set
+        System.out.println(set.contains("Apple"));  // Should print true
+
+        // Print all elements in the set
+        System.out.println(set);  // Output: [Apple, Banana, Orange]
+    }
+}
+```
+
+### **Step-by-Step Explanation of Add Operation:**
+1. When you call `set.add("Apple")`, the `hashCode()` method of `"Apple"` is called.
+   - Suppose the hashcode for `"Apple"` is `1234`.
+   - The hashcode is used to determine the index (bucket) in the underlying `HashMap`.
+2. The `equals()` method is called to check if the element already exists in the bucket.
+   - If `"Apple"` is not already in the set, it is added.
+3. When `set.add("Apple")` is called again (a duplicate), the same `hashCode()` value (`1234`) is generated.
+   - The `equals()` method confirms that `"Apple"` is already in the set, so it is not added again.
+
+### **Time Complexity of HashSet Operations:**
+- **Add**: On average, **O(1)** (constant time), but it can be **O(n)** in rare cases due to hash collisions and resizing.
+- **Remove**: **O(1)** on average, but it can be **O(n)** in rare cases due to hash collisions.
+- **Contains**: **O(1)** on average, but it can be **O(n)** in rare cases due to hash collisions.
+
+### **Important Considerations:**
+1. **Hash Collisions**: When two or more elements have the same hashcode, the `HashSet` stores them in the same bucket. It then uses the `equals()` method to distinguish between them.
+   - If your `hashCode()` and `equals()` methods are not properly overridden in the object being stored, the `HashSet` may not behave as expected.
+
+2. **Resizing**: When the number of elements exceeds a threshold (load factor), the underlying `HashMap` (and thus the `HashSet`) will resize itself to maintain efficient access times.
+
+3. **Efficiency**: The `HashSet` is generally more efficient than a `TreeSet` for operations like `add()`, `remove()`, and `contains()`, as it provides average constant time complexity. However, `TreeSet` maintains elements in sorted order, which comes at the cost of slower operations.
+
+---
+
+### **Conclusion:**
+
+- A `HashSet` is an efficient implementation of the **`Set`** interface that is backed by a `HashMap`.
+- It ensures that elements are unique and provides fast access times (O(1) on average) due to its use of hashing.
+- **`hashCode()`** and **`equals()`** play a critical role in ensuring the correct behavior of `HashSet`, especially when handling hash collisions.

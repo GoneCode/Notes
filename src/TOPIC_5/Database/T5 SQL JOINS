@@ -1,0 +1,59 @@
+/*  types of joins in sql */
+
+/*  inner join
+	Definition: Returns only the rows where there is a match between the columns in both tables.
+	Use Case: When you need data that exists in both tables.
+*/
+
+/* Retrieve all employees along with their department names. */
+SELECT e.first_name, d.department_name
+FROM Employees e INNER JOIN Departments d
+ON e.department_id = d.department_id;
+
+/*
+	Left Join (Left Outer Join)
+	Definition: Returns all rows from the left table and the matched rows from the right table. Unmatched rows from the right table will have NULL.
+	Use Case: When you need all records from the left table, even if there's no match in the right table.
+*/
+
+select distinct(e.first_name), d.department_name
+FROM employees e LEFT JOIN departments d
+ON e.department_id =d.department_id;
+
+/* right join
+	Definition: Returns all rows from the right table and the matched rows from the left table. Unmatched rows from the left table will have NULL.
+	Use Case: When you need all records from the right table, even if there's no match in the left table.
+*/
+
+select e.first_name, d.department_name
+from employees e RIGHT JOIN departments d
+ON e.department_id = d.department_id;
+
+/* full outer join
+    Definition: Combines the results of both LEFT JOIN and RIGHT JOIN. Returns all rows from both tables, with NULL in places where there is no match.
+    Use Case: When you need all records from both tables, regardless of matching.
+*/
+
+SELECT first_name , department_name
+from employees  FULL JOIN departments  on department_id = department_id;
+
+/*
+	cross join
+	Definition: Produces the Cartesian product of the two tables. Every row in the first table is combined with every row in the second table.
+	Use Case: Rarely used, but helpful for scenarios like generating test data.
+*/
+
+SELECT e.first_name , d.department_name
+FROM employees e cross join departments d;
+
+
+/*
+	self join
+	Definition: Joins a table to itself using an alias to differentiate between the same table's instances.
+	Use Case: When you need to compare rows within the same table.
+*/
+
+ SELECT e1.first_name as employee1 , e2.first_name as employee2
+ from employees e1 JOIN employees e2
+ ON e1.department_id = e2.department_id
+ WHERE e1.employee_id=e2.employee_id;

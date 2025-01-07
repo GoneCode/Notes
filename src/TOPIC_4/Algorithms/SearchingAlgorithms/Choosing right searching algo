@@ -1,0 +1,6 @@
+Choosing the Right Algorithm:
+1.) For unsorted data: Linear Search is your only option.
+2.) For sorted data: Binary Search is the most efficient choice.
+3.) For specific data distributions: Interpolation Search can be faster than Binary Search.
+4.) For large sorted arrays: Jump Search can be faster than Linear Search.
+5.) For frequent lookups: Hashing provides the fastest access times.

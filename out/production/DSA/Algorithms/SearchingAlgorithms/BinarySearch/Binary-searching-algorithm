@@ -1,0 +1,51 @@
+Here’s a detailed explanation and implementation of the **Binary Search Algorithm** in Java.
+
+---
+
+### **Binary Search Algorithm**
+**Binary Search** is an efficient algorithm to find the position of a target element in a sorted array. It works by repeatedly dividing the search range in half.
+
+---
+
+### **Steps**:
+1. Start with two pointers:
+   - `low` (beginning of the array) and `high` (end of the array).
+2. Calculate the `mid` index:
+   - \( \text{mid} = \text{low} + \frac{\text{high} - \text{low}}{2} \).
+3. Compare the target with the middle element:
+   - If they match, return the `mid` index.
+   - If the target is smaller than the middle element, narrow the search to the left half (`high = mid - 1`).
+   - If the target is larger, narrow the search to the right half (`low = mid + 1`).
+4. Repeat steps 2–3 until the target is found or the search range is empty.
+5. If the target is not found, return -1.
+
+---
+
+### **Key Points**:
+- **Use Case**: The array must be sorted.
+- **Time Complexity**: \( O(\log n) \).
+- **Space Complexity**: \( O(1) \) for iterative implementation.
+
+---
+
+### **Example**:
+**Array**: `{2, 4, 6, 8, 10, 12, 14}`
+**Target**: `8`
+
+1. `low = 0`, `high = 6`, `mid = 3`.
+   - `arr[mid] = 8`, which matches the target.
+   - **Output**: `Element found at index: 3`.
+
+---
+
+### **Output**:
+```
+Element found at index: 3
+```
+
+If the target is not in the array (e.g., `9`), the output will be:
+```
+Element not found
+```
+
+---

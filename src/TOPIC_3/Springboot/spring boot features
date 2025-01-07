@@ -1,0 +1,158 @@
+Spring Boot annotations are a key part of the framework, making it easier to configure, develop, and deploy applications.
+Here's a list of commonly asked annotations in interviews, along with their purposes:
+
+---
+
+### **Core Annotations**
+1. **@SpringBootApplication**
+   - Marks the main class of a Spring Boot application.
+   - Combines:
+     - `@Configuration`: Indicates that the class can contain Spring bean definitions.
+     - `@EnableAutoConfiguration`: Enables Spring Boot's auto-configuration mechanism.
+     - `@ComponentScan`: Scans for components, configurations, and services in the specified package.
+
+2. **@Configuration**
+   - Indicates that the class contains bean definitions (`@Bean`).
+
+3. **@Bean**
+   - Indicates a method that returns a bean to be managed by the Spring container.
+
+4. **@ComponentScan**
+   - Configures the packages to scan for Spring components.
+
+---
+
+### **Dependency Injection Annotations**
+5. **@Autowired**
+   - Automatically injects dependencies by type.
+
+6. **@Qualifier**
+   - Specifies the bean to be injected when multiple candidates are available.
+
+7. **@Primary**
+   - Indicates a primary bean to be used when multiple candidates are available.
+
+8. **@Value**
+   - Injects property values from `application.properties` or `application.yml`.
+
+---
+
+### **Controller and REST API Annotations**
+9. **@Controller**
+   - Marks a class as a controller to handle web requests.
+
+10. **@RestController**
+    - Combines `@Controller` and `@ResponseBody`.
+    - Used for RESTful APIs.
+
+11. **@RequestMapping**
+    - Maps HTTP requests to handler methods/classes.
+
+12. **@GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping**
+    - Specialized annotations for HTTP GET, POST, PUT, DELETE, and PATCH requests.
+
+    @PostMapping
+    Maps to: HTTP POST method.
+    Purpose: Used to create new resources or perform actions that result in a new entity being created on the server.
+
+    When to Use PUT
+    Use PUT when you need to replace the entire resource or if the resource does not exist and needs to be created (in some implementations).
+
+    When to Use PATCH
+    Use PATCH when you only need to update specific fields of a resource without touching other fields.
+
+13. **@PathVariable**
+    - Binds URI template variables to method parameters.
+
+14. **@RequestParam**
+    - Binds query parameters to method parameters.
+
+                 RequestParam                                       PathVariable
+    Use Case	 Use when passing optional or additional data. 	    Use when the data is part of the resource identifier.
+    URL Example	 /users?name=John&age=30	                        /users/{id} (e.g., /users/123)
+    Data Format	Works well with key-value pairs.	                Works with clean, RESTful URIs.
+
+15. **@RequestBody**
+    - Maps the body of an HTTP request to a Java object.
+
+16. **@ResponseBody**
+    - Indicates that the return value of a method should be written directly to the HTTP response.
+
+17. **@ExceptionHandler**
+    - Handles exceptions in controllers.
+
+---
+
+### **Spring Boot Features**
+18. **@EnableAutoConfiguration**
+    - Automatically configures the Spring application based on the classpath.
+
+19. **@ConditionalOnProperty**
+    - Enables configuration based on properties.
+
+20. **@ConditionalOnClass**
+    - Enables configuration if a specific class is present.
+
+21. **@PropertySource**
+    - Loads properties from an external file.
+
+22. **@EnableScheduling**
+    - Enables scheduling support in the application.
+
+23. **@Scheduled**
+    - Specifies a scheduled task.
+
+---
+
+### **TOPIC_5.Database Annotations**
+24. **@Entity**
+    - Marks a class as a JPA entity.
+
+25. **@Table**
+    - Specifies the database table for an entity.
+
+26. **@Id**
+    - Marks a field as the primary key.
+
+27. **@GeneratedValue**
+    - Specifies how the primary key is generated.
+
+28. **@Column**
+    - Specifies details of a column in a table.
+
+29. **@Repository**
+    - Indicates a repository for database operations.
+
+30. **@Transactional**
+    - Specifies that a method/class should run within a transaction.
+
+---
+
+### **Security Annotations**
+31. **@EnableWebSecurity**
+    - Enables Spring Security in the application.
+
+32. **@PreAuthorize**
+    - Method-level security to check user roles/permissions.
+
+33. **@RolesAllowed**
+    - Similar to `@PreAuthorize`, defines allowed roles.
+
+---
+
+### **Testing Annotations**
+34. **@SpringBootTest**
+    - Used for integration testing in Spring Boot applications.
+
+35. **@MockBean**
+    - Creates a mock instance of a bean for testing purposes.
+
+36. **@TestConfiguration**
+    - Specifies custom configurations for testing.
+
+---
+
+### Tips for Interviews
+- Explain the purpose and use case of each annotation.
+- Be prepared to write a sample code snippet using these annotations.
+- Discuss the difference between similar annotations (e.g., `@RestController` vs `@Controller` + `@ResponseBody`).

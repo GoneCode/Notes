@@ -1,0 +1,130 @@
+The **Running Sum of 1D Array** problem is a straightforward algorithmic problem that involves computing a cumulative sum.
+
+---
+
+### **Problem Description**
+
+Given an array `nums`, return a new array `runningSum` where each element `runningSum[i]` is the sum of all elements in `nums` from index `0` to `i` (inclusive).
+
+---
+
+### **Example**
+
+#### Example 1:
+```plaintext
+Input: nums = [1, 2, 3, 4]
+Output: [1, 3, 6, 10]
+Explanation:
+- runningSum[0] = nums[0] = 1
+- runningSum[1] = nums[0] + nums[1] = 1 + 2 = 3
+- runningSum[2] = nums[0] + nums[1] + nums[2] = 1 + 2 + 3 = 6
+- runningSum[3] = nums[0] + nums[1] + nums[2] + nums[3] = 1 + 2 + 3 + 4 = 10
+```
+
+#### Example 2:
+```plaintext
+Input: nums = [1, 1, 1, 1, 1]
+Output: [1, 2, 3, 4, 5]
+Explanation:
+Each element accumulates the sum of all previous elements.
+```
+
+#### Example 3:
+```plaintext
+Input: nums = [3, 1, 2, 10, 1]
+Output: [3, 4, 6, 16, 17]
+```
+
+---
+
+### **Approach 1: Iterative Solution**
+
+#### Idea:
+- Start with the first element of `nums` as the initial running sum.
+- For each subsequent element, add the previous running sum to the current element and store it in the result.
+
+#### Steps:
+1. Initialize the first element of `runningSum` as `nums[0]`.
+2. For each index `i` from `1` to `nums.length - 1`:
+   - Update `runningSum[i]` as `runningSum[i - 1] + nums[i]`.
+
+#### Code:
+```java
+public int[] runningSum(int[] nums) {
+    for (int i = 1; i < nums.length; i++) {
+        nums[i] += nums[i - 1]; // Update current element with cumulative sum
+    }
+    return nums;
+}
+```
+
+#### Explanation:
+- For `nums = [1, 2, 3, 4]`:
+  - `nums[1] = nums[1] + nums[0] = 2 + 1 = 3` → `nums = [1, 3, 3, 4]`
+  - `nums[2] = nums[2] + nums[1] = 3 + 3 = 6` → `nums = [1, 3, 6, 4]`
+  - `nums[3] = nums[3] + nums[2] = 4 + 6 = 10` → `nums = [1, 3, 6, 10]`
+
+#### Time Complexity:
+- **O(n)**: Single traversal of the array.
+- Space Complexity: **O(1)**: Modifies the input array in-place.
+
+---
+
+### **Approach 2: Using a New Array**
+
+#### Idea:
+- Create a new array `runningSum` of the same size as `nums`.
+- Compute each running sum independently using a cumulative sum variable.
+
+#### Code:
+```java
+public int[] runningSum(int[] nums) {
+    int[] runningSum = new int[nums.length];
+    runningSum[0] = nums[0]; // Initialize the first element
+
+    for (int i = 1; i < nums.length; i++) {
+        runningSum[i] = runningSum[i - 1] + nums[i];
+    }
+
+    return runningSum;
+}
+```
+
+#### Explanation:
+- For `nums = [1, 2, 3, 4]`:
+  - `runningSum[0] = 1`
+  - `runningSum[1] = runningSum[0] + nums[1] = 1 + 2 = 3`
+  - `runningSum[2] = runningSum[1] + nums[2] = 3 + 3 = 6`
+  - `runningSum[3] = runningSum[2] + nums[3] = 6 + 4 = 10`
+
+#### Time Complexity:
+- **O(n)**: Single traversal of the array.
+- Space Complexity: **O(n)**: Additional array used.
+
+---
+
+### **Key Insights**
+
+1. The running sum of an array is cumulative:
+   - `runningSum[i] = runningSum[i - 1] + nums[i]`.
+2. Modifying the input array in-place is efficient when extra space isn't allowed.
+3. For a read-only input array, use the second approach to maintain immutability.
+
+---
+
+### **Edge Cases**
+1. **Empty Array**:
+   - Input: `nums = []`
+   - Output: `[]`
+
+2. **Single Element**:
+   - Input: `nums = [5]`
+   - Output: `[5]`
+
+3. **Negative Numbers**:
+   - Input: `nums = [3, -1, 2, -2, 4]`
+   - Output: `[3, 2, 4, 2, 6]`
+
+---
+
+Would you like to explore variations or debug a specific implementation?

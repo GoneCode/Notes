@@ -1,0 +1,59 @@
+1.) How many objects will be created in the following code?
+    String s1 = " javatpoint";
+    String s2 = "javatpoint";
+Answer: Only one object will be created in the string pool.
+
+2.) What is the difference between equals() method and == operator?
+Answer: The equals() method compares the content of the strings, whereas the == operator compares the references of the strings.
+
+3.) Is the String class final?
+Answer: Yes, the String class is final.
+
+4.) How do you reverse a string in Java?
+Answer: You can reverse a string using a loop or the StringBuilder class
+    String str = "javatpoint";
+    StringBuilder sb = new StringBuilder(str);
+    String reversed = sb.reverse().toString();
+
+5.) How do you check if a string is a palindrome in Java?
+Answer: A palindrome string reads the same forward and backward. You can check it by comparing the string with its reverse.
+    String str = "nitin";
+    boolean isPalindrome = str.equals(new StringBuilder(str).reverse().toString());
+
+
+6.) What is the difference between String and StringBuffer in Java?
+Answer: String is immutable, while StringBuffer is mutable and thread-safe.
+
+7.) What is the difference between StringBuffer and StringBuilder in Java?
+Answer: Both are mutable, but StringBuffer is synchronized (thread-safe), whereas StringBuilder is not.
+
+8.) What does the intern() method do in Java?
+    Answer: The intern() method returns a canonical representation for the string object from the string pool.
+
+
+9.) How do you convert a string to an integer in Java?
+    Answer: You can use the Integer.parseInt() method.
+     String str = "123"; int num = Integer.parseInt(str);
+
+10.) How do you convert an integer to a string in Java?
+    Answer: You can use the String.valueOf() method or the Integer.toString() method.
+    int num = 123;
+    String str = String.valueOf(num);
+
+11.) How do you optimize string creation in Java?
+ Answer: Use the string pool by creating strings using string literals instead of the new keyword.
+
+12.) How do you check if two strings are anagrams in Java?
+    Answer: Two strings are anagrams if they contain the same characters in the same frequency. You can check this by sorting the strings and comparing them.
+    String str1 = "listen";
+    String str2 = "silent";
+    boolean isAnagram = Arrays.equals(str1.chars().sorted().toArray(), str2.chars().sorted().toArray());
+
+13.) How do you find duplicate characters in a string in Java?
+     Answer: You can use a HashMap to count the frequency of each character.
+
+14.) How do you remove all white spaces from a string in Java?
+     Answer: You can use the replaceAll() method.
+     String str = "Hello World";
+     String noSpaces = str.replaceAll("\\s", "");
+

@@ -1,0 +1,160 @@
+In Java, a **`Hashtable`** is a part of the Java Collections Framework and is used to store key-value pairs, similar to a `HashMap`. However, there are some key differences between the two. Let’s dive into what a `Hashtable` is, its key characteristics, and how to use it in Java.
+
+### **What is a Hashtable?**
+
+A `Hashtable` is a **synchronized** collection that implements the **Map** interface. It was part of the original version of Java (Java 1.0), and it predates `HashMap`.
+
+- **Key Characteristics**:
+  - **Synchronized**: A `Hashtable` is thread-safe, meaning multiple threads can access a `Hashtable` simultaneously without causing data corruption.
+  - **No `null` keys or `null` values**: Unlike `HashMap`, a `Hashtable` does not allow `null` as a key or value. Attempting to insert a `null` key or value will throw a `NullPointerException`.
+  - **Hashing**: It uses hashing to store keys and values in an internal array, much like a `HashMap`.
+  - **Legacy**: `Hashtable` has been largely replaced by `HashMap` in modern Java, and its use is generally discouraged in favor of more flexible and high-performance alternatives like `HashMap` and `ConcurrentHashMap`.
+
+### **Creating a Hashtable**
+
+```java
+import java.util.Hashtable;
+
+public class HashtableExample {
+    public static void main(String[] args) {
+        // Create a Hashtable
+        Hashtable<String, String> table = new Hashtable<>();
+
+        // Insert key-value pairs
+        table.put("1", "One");
+        table.put("2", "Two");
+        table.put("3", "Three");
+
+        // Display the Hashtable
+        System.out.println("Hashtable: " + table);
+    }
+}
+```
+
+### **Key Methods in Hashtable**
+
+1. **`put(K key, V value)`**:
+   - Adds a key-value pair to the `Hashtable`.
+   - If the key already exists, the existing value is replaced with the new one.
+
+   ```java
+   table.put("4", "Four");
+   ```
+
+2. **`get(Object key)`**:
+   - Retrieves the value associated with the given key.
+   - Returns `null` if the key does not exist.
+
+   ```java
+   String value = table.get("2"); // Returns "Two"
+   ```
+
+3. **`remove(Object key)`**:
+   - Removes the key-value pair for the given key.
+   - Returns the value that was removed, or `null` if the key was not found.
+
+   ```java
+   table.remove("1"); // Removes the key-value pair for "1"
+   ```
+
+4. **`containsKey(Object key)`**:
+   - Returns `true` if the `Hashtable` contains the specified key.
+
+   ```java
+   boolean contains = table.containsKey("3"); // Returns true
+   ```
+
+5. **`containsValue(Object value)`**:
+   - Returns `true` if the `Hashtable` contains the specified value.
+
+   ```java
+   boolean containsValue = table.containsValue("Two"); // Returns true
+   ```
+
+6. **`size()`**:
+   - Returns the number of key-value pairs in the `Hashtable`.
+
+   ```java
+   int size = table.size(); // Returns the number of entries
+   ```
+
+7. **`keys()`**:
+   - Returns an enumeration of the keys in the `Hashtable`.
+
+   ```java
+   Enumeration<String> keys = table.keys();
+   while (keys.hasMoreElements()) {
+       System.out.println(keys.nextElement());
+   }
+   ```
+
+8. **`values()`**:
+   - Returns a collection of the values in the `Hashtable`.
+
+   ```java
+   Collection<String> values = table.values();
+   for (String value : values) {
+       System.out.println(value);
+   }
+   ```
+
+### **Hashtable vs HashMap**
+Here’s a quick comparison between `Hashtable` and `HashMap` to understand the differences:
+
+| Feature                     | `Hashtable`                    | `HashMap`                      |
+|-----------------------------|--------------------------------|--------------------------------|
+| **Thread Safety**           | Synchronized (thread-safe)     | Not synchronized (not thread-safe) |
+| **Null Keys/Values**        | No `null` keys/values allowed  | Allows one `null` key and multiple `null` values |
+| **Performance**             | Slower due to synchronization overhead | Faster in single-threaded scenarios |
+| **Introduced in**           | Java 1.0                       | Java 1.2 (as part of the Collections Framework) |
+| **Legacy Status**           | Legacy class, rarely used now  | Preferred for most use cases |
+
+### **When to Use Hashtable?**
+While `Hashtable` is thread-safe, it is generally **not recommended** for most use cases. Instead, you should use alternatives like:
+
+1. **`HashMap`** when thread safety is not a concern.
+2. **`ConcurrentHashMap`** when thread safety is required for concurrent access (more efficient than `Hashtable` in multi-threaded environments).
+
+### **Example: Multithreaded Access using Hashtable**
+
+Here’s an example where multiple threads access a `Hashtable` simultaneously:
+
+```java
+import java.util.Hashtable;
+
+public class MultiThreadedHashtableExample {
+    public static void main(String[] args) {
+        Hashtable<String, String> table = new Hashtable<>();
+
+        // Insert key-value pairs
+        table.put("1", "One");
+        table.put("2", "Two");
+        table.put("3", "Three");
+
+        // Thread 1 - Reading from Hashtable
+        Thread thread1 = new Thread(() -> {
+            System.out.println("Thread 1: " + table.get("1"));
+        });
+
+        // Thread 2 - Reading from Hashtable
+        Thread thread2 = new Thread(() -> {
+            System.out.println("Thread 2: " + table.get("2"));
+        });
+
+        // Start both threads
+        thread1.start();
+        thread2.start();
+    }
+}
+```
+
+In this example, both threads will safely access the `Hashtable` concurrently because the `Hashtable` is synchronized.
+
+### **Conclusion**
+
+- **`Hashtable`** is a thread-safe collection that was used in early versions of Java.
+- It **does not allow null keys or null values**.
+- It is **synchronized**, but this comes at the cost of performance in multi-threaded scenarios, which is why it's generally replaced by `HashMap` (for non-concurrent use) or `ConcurrentHashMap` (for concurrent use).
+- Modern Java development tends to favor `HashMap` or `ConcurrentHashMap` due to their better performance and flexibility.
+
+Let me know if you need further clarification or examples! 😊

@@ -1,0 +1,383 @@
+
+Window functions in SQL are powerful tools that allow you to perform calculations across rows of a result set while retaining the details of individual rows.
+They are particularly useful for analytics and reporting.
+
+Here's a step-by-step guide to understanding window functions in SQL:
+
+---
+
+### **1. What Are Window Functions?**
+Window functions perform a calculation across a "window" of rows related to the current row. Unlike aggregate functions (e.g., `SUM`, `AVG`),
+which return a single value for a group, window functions return a value for each row in the query result.
+
+---
+
+### **2. Components of a Window Function**
+A window function has the following syntax:
+
+```sql
+function_name(expression) OVER (
+    PARTITION BY column_name(s)
+    ORDER BY column_name(s)
+    ROWS or RANGE clause
+)
+```
+
+- **`function_name`**: The operation to perform (e.g., `ROW_NUMBER`, `RANK`, `SUM`).
+- **`PARTITION BY`**: Divides the result set into subsets to which the function is applied. (Optional)
+- **`ORDER BY`**: Specifies the order of rows within each partition.
+- **`ROWS`/`RANGE` clause**: Defines the window frame. (Optional)
+
+---
+
+### **3. Common Window Functions**
+
+#### **a. ROW_NUMBER**
+
+            Assigns a unique number to each row within a partition.
+            ```sql
+            SELECT
+                employee_id,
+                department_id,
+                ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS row_num
+            FROM employees;
+            ```
+            - This assigns a rank to employees based on their salary in each department.
+
+            The `ROW_NUMBER()` function in SQL is used to assign a unique, sequential integer to rows within a specific result set. This is particularly useful for tasks where you need to work with ordered or ranked data.
+
+            Here are some **key use cases** of `ROW_NUMBER()`:
+
+            ---
+
+            ### **1. Paginating Results**
+            When displaying results in pages (e.g., in web applications), `ROW_NUMBER()` can help you fetch a specific subset of rows (e.g., rows 1–10 for page 1, rows 11–20 for page 2).
+
+            #### Example: Paginating Customer Records
+            ```sql
+            WITH NumberedRows AS (
+                SELECT
+                    customer_id,
+                    customer_name,
+                    ROW_NUMBER() OVER (ORDER BY customer_id) AS row_num
+                FROM customers
+            )
+            SELECT *
+            FROM NumberedRows
+            WHERE row_num BETWEEN 11 AND 20; -- Fetch rows for page 2
+            ```
+
+            ---
+
+            ### **2. Removing Duplicate Rows**
+            `ROW_NUMBER()` can identify duplicate rows, allowing you to keep one instance and delete the rest.
+
+            #### Example: Remove Duplicates from a Table
+            ```sql
+            WITH RankedRows AS (
+                SELECT
+                    *,
+                    ROW_NUMBER() OVER (PARTITION BY column_with_duplicates ORDER BY id) AS row_num
+                FROM my_table
+            )
+            DELETE FROM my_table
+            WHERE id IN (
+                SELECT id
+                FROM RankedRows
+                WHERE row_num > 1
+            );
+            ```
+
+            ---
+
+            ### **3. Generating Sequential Numbers**
+            `ROW_NUMBER()` generates a sequence number for rows, which can be helpful in assigning ranks or creating unique identifiers for data sets.
+
+            #### Example: Assign Unique IDs to Rows
+            ```sql
+            SELECT
+                employee_name,
+                department_id,
+                ROW_NUMBER() OVER (ORDER BY employee_name) AS unique_id
+            FROM employees;
+            ```
+
+            ---
+
+            ### **4. Ranking Rows in Subsets**
+            You can use `ROW_NUMBER()` with `PARTITION BY` to assign ranks within subsets of data (e.g., within each department or category).
+
+            #### Example: Rank Employees by Salary in Each Department
+            ```sql
+            SELECT
+                employee_id,
+                department_id,
+                salary,
+                ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rank
+            FROM employees;
+            ```
+
+            ---
+
+            ### **5. Filtering Specific Rows Based on Order**
+            `ROW_NUMBER()` allows you to filter specific rows, such as finding the top-N rows for each group.
+
+            #### Example: Find Top 3 Earners in Each Department
+            ```sql
+            WITH RankedEmployees AS (
+                SELECT
+                    employee_id,
+                    department_id,
+                    salary,
+                    ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rank
+                FROM employees
+            )
+            SELECT *
+            FROM RankedEmployees
+            WHERE rank <= 3;
+            ```
+
+            ---
+
+            ### **6. Debugging and Exploring Data**
+            When analyzing large data sets, `ROW_NUMBER()` can help you identify or trace rows based on their position in the result set.
+
+            #### Example: Add Row Numbers to Inspect Query Output
+            ```sql
+            SELECT
+                ROW_NUMBER() OVER (ORDER BY some_column) AS row_num,
+                *
+            FROM some_table;
+            ```
+
+            ### **Key Benefits of Using ROW_NUMBER()**
+            - It allows sequential numbering of rows in ordered results.
+            - It enables advanced data manipulation (e.g., deduplication, pagination).
+            - It is highly customizable with `PARTITION BY` and `ORDER BY`.
+
+#### **b. RANK and DENSE_RANK**
+            - **`RANK`**: Gives ranks to rows with gaps in case of ties.
+            - **`DENSE_RANK`**: Ranks without gaps.
+            ```sql
+            SELECT
+                employee_id,
+                salary,
+                RANK() OVER (ORDER BY salary DESC) AS rank,
+                DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rank
+            FROM employees;
+            ```
+
+            ### **What is RANK in SQL?**
+
+            The `RANK()` function in SQL is a **window function** used to assign a **rank** to rows within a partition of a result set. The rank is based on the order specified in the `ORDER BY` clause of the `OVER()` clause.
+
+            - **RANK() Characteristics**:
+              1. **Ranks with Gaps**: If two rows have the same rank, the next rank will skip a value. For example, if two rows tie at rank 1, the next rank will be 3, not 2.
+              2. **Sorting Within Partitions**: You can rank rows separately within each group (partition) using the `PARTITION BY` clause.
+
+            ---
+
+            ### **Syntax**
+
+            ```sql
+            RANK() OVER ( [PARTITION BY column_name] ORDER BY column_name )
+            ```
+
+            - **`PARTITION BY`**: Divides the result set into partitions, and the ranking starts over within each partition.
+            - **`ORDER BY`**: Determines the order of rows within each partition to calculate the rank.
+
+            ---
+
+            ### **Example Scenarios**
+
+            #### **1. Basic Usage of RANK**
+            Rank employees by salary in descending order:
+            ```sql
+            SELECT Employee_ID, Name, Salary,
+                   RANK() OVER (ORDER BY Salary DESC) AS Rank
+            FROM Employees;
+            ```
+
+            **Output**:
+            | Employee_ID | Name    | Salary  | Rank |
+            |-------------|---------|---------|------|
+            | 101         | Alice   | 90000   | 1    |
+            | 102         | Bob     | 85000   | 2    |
+            | 103         | Charlie | 85000   | 2    |
+            | 104         | David   | 75000   | 4    |
+
+            - Alice has the highest salary, so she's ranked 1.
+            - Bob and Charlie tie at rank 2 because they have the same salary.
+            - David is ranked 4 (gap due to the tie).
+
+            ---
+
+            #### **2. RANK with PARTITION BY**
+            Rank employees by salary **within each department**:
+            ```sql
+            SELECT Department, Employee_ID, Name, Salary,
+                   RANK() OVER (PARTITION BY Department ORDER BY Salary DESC) AS Rank
+            FROM Employees;
+            ```
+
+            **Output**:
+            | Department | Employee_ID | Name    | Salary  | Rank |
+            |------------|-------------|---------|---------|------|
+            | HR         | 101         | Alice   | 90000   | 1    |
+            | HR         | 102         | Bob     | 85000   | 2    |
+            | IT         | 103         | Charlie | 85000   | 1    |
+            | IT         | 104         | David   | 75000   | 2    |
+
+            - Ranks are calculated separately for each department due to `PARTITION BY Department`.
+
+            ---
+
+            ### **Comparison with Similar Functions**
+
+            1. **RANK() vs DENSE_RANK()**:
+               - `RANK()` introduces gaps in the ranking when there are ties.
+               - `DENSE_RANK()` does not introduce gaps; the next rank is consecutive.
+
+               **Example**:
+               | Salary  | RANK() | DENSE_RANK() |
+               |---------|--------|--------------|
+               | 90000   | 1      | 1            |
+               | 85000   | 2      | 2            |
+               | 85000   | 2      | 2            |
+               | 75000   | 4      | 3            |
+
+            2. **RANK() vs ROW_NUMBER()**:
+               - `ROW_NUMBER()` assigns a unique number to each row, even for ties.
+               - `RANK()` gives the same rank to tied rows but leaves gaps.
+
+            ---
+
+            ### **Use Cases for RANK()**
+
+            1. **Identify Top Performers**:
+               Find the top 3 highest-paid employees:
+               ```sql
+               SELECT Employee_ID, Name, Salary,
+                      RANK() OVER (ORDER BY Salary DESC) AS Rank
+               FROM Employees
+               WHERE Rank <= 3;
+               ```
+
+            2. **Detect Ties**:
+               Use `RANK()` to identify rows that have the same rank (e.g., multiple employees with the same score).
+
+            3. **Analysis within Groups**:
+               Rank products by sales within categories.
+
+            ---
+
+            Would you like a more complex example or implementation in a specific context?
+
+#### **c. NTILE**
+Divides rows into a specified number of buckets.
+```sql
+SELECT
+    employee_id,
+    salary,
+    NTILE(4) OVER (ORDER BY salary DESC) AS quartile
+FROM employees;
+```
+
+#### **d. Aggregate Functions as Window Functions**
+You can use aggregate functions like `SUM`, `AVG`, `MIN`, `MAX` with a window.
+```sql
+SELECT
+    department_id,
+    employee_id,
+    salary,
+    SUM(salary) OVER (PARTITION BY department_id) AS total_salary
+FROM employees;
+```
+
+#### **e. LAG and LEAD**
+Access data from previous (`LAG`) or next (`LEAD`) rows.
+```sql
+SELECT
+    employee_id,
+    salary,
+    LAG(salary, 1) OVER (ORDER BY salary DESC) AS previous_salary,
+    LEAD(salary, 1) OVER (ORDER BY salary DESC) AS next_salary
+FROM employees;
+```
+
+#### **f. FIRST_VALUE and LAST_VALUE**
+Retrieve the first or last value in a window.
+```sql
+SELECT
+    employee_id,
+    salary,
+    FIRST_VALUE(salary) OVER (ORDER BY salary DESC) AS highest_salary
+FROM employees;
+```
+
+---
+
+### **4. Practical Examples**
+
+#### **Example 1: Ranking Products by Price in Categories**
+```sql
+SELECT
+    category_id,
+    product_id,
+    price,
+    RANK() OVER (PARTITION BY category_id ORDER BY price DESC) AS rank
+FROM products;
+```
+
+#### **Example 2: Rolling Sum of Sales**
+```sql
+SELECT
+    sales_id,
+    amount,
+    SUM(amount) OVER (ORDER BY sales_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS rolling_sum
+FROM sales;
+```
+
+#### **Example 3: Comparing Current Row with the Previous**
+```sql
+SELECT
+    sales_id,
+    sales_amount,
+    sales_date,
+    sales_amount - LAG(sales_amount) OVER (ORDER BY sales_date) AS sales_diff
+FROM sales;
+```
+
+---
+
+### **5. Window vs. GROUP BY**
+- **GROUP BY** collapses rows into a single result per group.
+- **Window functions** calculate values across a group but still return all rows.
+
+---
+
+### **6. Practice SQL Query**
+Try this example to see window functions in action:
+```sql
+CREATE TABLE sales (
+    sales_id INT PRIMARY KEY,
+    product_id INT,
+    sales_amount DECIMAL(10, 2),
+    sales_date DATE
+);
+
+INSERT INTO sales VALUES
+(1, 101, 500.00, '2025-01-01'),
+(2, 102, 300.00, '2025-01-02'),
+(3, 101, 700.00, '2025-01-03'),
+(4, 103, 400.00, '2025-01-04');
+
+SELECT
+    sales_id,
+    product_id,
+    sales_amount,
+    SUM(sales_amount) OVER (PARTITION BY product_id ORDER BY sales_date) AS running_total
+FROM sales;
+```
+
+Would you like more exercises or a deeper dive into a specific function?

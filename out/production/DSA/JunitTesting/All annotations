@@ -1,0 +1,314 @@
+JUnit 5 provides a rich set of annotations to help developers write tests effectively. Below is a comprehensive list of JUnit 5 annotations along with examples.
+
+---
+
+### **Core Annotations**
+
+1. **`@Test`**
+   - Marks a method as a test case.
+   - Example:
+     ```java
+     @Test
+     void testAddition() {
+         assertEquals(5, 2 + 3);
+     }
+     ```
+
+2. **`@DisplayName`**
+   - Provides a custom name for the test for better readability.
+   - Example:
+     ```java
+     @Test
+     @DisplayName("Testing addition of two numbers")
+     void testAddition() {
+         assertEquals(5, 2 + 3);
+     }
+     ```
+
+3. **`@BeforeEach`**
+   - Executes before each test method.
+   - Example:
+     ```java
+     @BeforeEach
+     void setup() {
+         System.out.println("Setting up test environment");
+     }
+     ```
+
+4. **`@AfterEach`**
+   - Executes after each test method.
+   - Example:
+     ```java
+     @AfterEach
+     void tearDown() {
+         System.out.println("Cleaning up after test");
+     }
+     ```
+
+5. **`@BeforeAll`**
+   - Executes once before all test methods in the class. Must be static unless using a test instance lifecycle of `@TestInstance(Lifecycle.PER_CLASS)`.
+   - Example:
+     ```java
+     @BeforeAll
+     static void initialize() {
+         System.out.println("Initializing resources");
+     }
+     ```
+
+6. **`@AfterAll`**
+   - Executes once after all test methods in the class. Must be static unless using `@TestInstance(Lifecycle.PER_CLASS)`.
+   - Example:
+     ```java
+     @AfterAll
+     static void cleanUp() {
+         System.out.println("Cleaning up resources");
+     }
+     ```
+
+---
+
+### **Conditional Execution**
+
+7. **`@EnabledOnOs` / `@DisabledOnOs`**
+   - Runs or skips tests on specific operating systems.
+   - Example:
+     ```java
+     @Test
+     @EnabledOnOs(OS.WINDOWS)
+     void testOnWindows() {
+         System.out.println("This test runs only on Windows");
+     }
+     ```
+
+8. **`@EnabledOnJre` / `@DisabledOnJre`**
+   - Runs or skips tests on specific Java runtime versions.
+   - Example:
+     ```java
+     @Test
+     @EnabledOnJre(JRE.JAVA_11)
+     void testOnJava11() {
+         System.out.println("This test runs only on Java 11");
+     }
+     ```
+
+9. **`@EnabledIf` / `@DisabledIf`**
+   - Enables or disables tests based on custom conditions.
+   - Example:
+     ```java
+     @Test
+     @DisabledIf(expression = "2 < 3", reason = "Condition always true")
+     void testDisabled() {
+         System.out.println("This test will not run");
+     }
+     ```
+
+---
+
+### **Tagging and Filtering**
+
+10. **`@Tag`**
+    - Categorizes tests.
+    - Example:
+      ```java
+      @Test
+      @Tag("fast")
+      void fastTest() {
+          System.out.println("Fast test execution");
+      }
+      ```
+
+---
+
+### **Nested Tests**
+
+11. **`@Nested`**
+    - Groups related test cases.
+    - Example:
+      ```java
+      @Nested
+      class AdditionTests {
+          @Test
+          void testPositiveNumbers() {
+              assertEquals(5, 2 + 3);
+          }
+
+          @Test
+          void testNegativeNumbers() {
+              assertEquals(-5, -2 + -3);
+          }
+      }
+      ```
+
+---
+
+### **Parameterized Tests**
+
+12. **`@ParameterizedTest`**
+    - Marks a test method as a parameterized test.
+    - Example:
+      ```java
+      @ParameterizedTest
+      @ValueSource(ints = {1, 2, 3})
+      void testWithValues(int number) {
+          assertTrue(number > 0);
+      }
+      ```
+
+13. **`@ValueSource`**
+    - Provides a fixed set of values for a parameterized test.
+    - Example:
+      ```java
+      @ParameterizedTest
+      @ValueSource(strings = {"Hello", "JUnit"})
+      void testWithStrings(String word) {
+          assertNotNull(word);
+      }
+      ```
+
+14. **`@CsvSource`**
+    - Provides multiple sets of arguments from a CSV source.
+    - Example:
+      ```java
+      @ParameterizedTest
+      @CsvSource({ "1, 2, 3", "4, 5, 9" })
+      void testCsvSource(int a, int b, int expected) {
+          assertEquals(expected, a + b);
+      }
+      ```
+
+15. **`@CsvFileSource`**
+    - Loads arguments from a CSV file.
+    - Example:
+      ```java
+      @ParameterizedTest
+      @CsvFileSource(resources = "/test-data.csv", numLinesToSkip = 1)
+      void testCsvFileSource(int a, int b, int expected) {
+          assertEquals(expected, a + b);
+      }
+      ```
+
+16. **`@EnumSource`**
+    - Provides values from an enum for testing.
+    - Example:
+      ```java
+      enum Day { MONDAY, TUESDAY, WEDNESDAY }
+      @ParameterizedTest
+      @EnumSource(Day.class)
+      void testEnumSource(Day day) {
+          assertNotNull(day);
+      }
+      ```
+
+---
+
+### **Assertions and Expectations**
+
+17. **`@Timeout`**
+    - Fails a test if it exceeds the specified duration.
+    - Example:
+      ```java
+      @Test
+      @Timeout(1) // 1 second
+      void testWithTimeout() {
+          Thread.sleep(2000); // Test will fail
+      }
+      ```
+
+18. **`@TestMethodOrder`**
+    - Specifies the order in which test methods are executed.
+    - Example:
+      ```java
+      @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+      class OrderedTests {
+          @Test
+          @Order(1)
+          void testA() { ... }
+
+          @Test
+          @Order(2)
+          void testB() { ... }
+      }
+      ```
+
+19. **`@RepeatedTest`**
+    - Runs the same test multiple times.
+    - Example:
+      ```java
+      @RepeatedTest(5)
+      void repeatTest() {
+          System.out.println("This test runs 5 times");
+      }
+      ```
+
+---
+
+### **Test Instance Lifecycle**
+
+20. **`@TestInstance`**
+    - Configures test instance lifecycle (`PER_CLASS` or `PER_METHOD`).
+    - Example:
+      ```java
+      @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+      class LifecycleTest {
+          @BeforeAll
+          void init() {
+              System.out.println("Executed once for the class");
+          }
+      }
+      ```
+
+---
+
+### **Customizing Exceptions**
+
+21. **`@ExtendWith`**
+    - Registers custom extensions.
+    - Example:
+      ```java
+      @ExtendWith(MyExtension.class)
+      class MyTests { ... }
+      ```
+
+---
+
+### Sample Usage of Multiple Annotations
+```java
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("JUnit 5 Annotations Example")
+class ExampleTest {
+
+    @BeforeAll
+    void setupAll() {
+        System.out.println("Executed before all tests");
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println("Executed before each test");
+    }
+
+    @Test
+    @DisplayName("Simple addition test")
+    void testAddition() {
+        assertEquals(5, 2 + 3);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3})
+    void testPositiveNumbers(int number) {
+        assertTrue(number > 0);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println("Executed after each test");
+    }
+
+    @AfterAll
+    void tearDownAll() {
+        System.out.println("Executed after all tests");
+    }
+}
+```
+
+By combining these annotations effectively, you can create organized, readable, and powerful test suites.
