@@ -1,5 +1,0 @@
-StringBuilder: Used to create mutable strings.
-
-Performance: Faster than StringBuffer because it is not synchronized.
-
-Common Methods: append(), insert(), replace(), delete(), reverse(), capacity(), ensureCapacity().
