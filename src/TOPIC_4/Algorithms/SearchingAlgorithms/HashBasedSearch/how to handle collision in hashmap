@@ -47,8 +47,8 @@ Starting from **Java 8**, when the number of elements in a bucket grows beyond a
 import java.util.HashMap;
 
 public class HashMapCollisionHandling {
-    public static void main(TOPIC_1_OOPS.javaOOPSConcepts.String[] args) {
-        HashMap<Integer, TOPIC_1_OOPS.javaOOPSConcepts.String> map = new HashMap<>();
+    public static void main(javaOOPSConcepts.String[] args) {
+        HashMap<Integer, javaOOPSConcepts.String> map = new HashMap<>();
 
         // Inserting key-value pairs
         map.put(101, "Alice");

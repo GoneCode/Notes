@@ -2,7 +2,7 @@
 SQL data types specify what kind of data can be stored in a table column. They fall into three primary categories:
 
 1. **Numeric Data Types**
-2. **TOPIC_1_OOPS.javaOOPSConcepts.String (Character) Data Types**
+2. **javaOOPSConcepts.String (Character) Data Types**
 3. **Date and Time Data Types**
 
 Below is a detailed explanation with examples.
@@ -35,8 +35,8 @@ VALUES (1, 'Laptop', 75000.50, 100);
 
 ---
 
-### **2. TOPIC_1_OOPS.javaOOPSConcepts.String (Character) Data Types**
-TOPIC_1_OOPS.javaOOPSConcepts.String data types store text or binary data.
+### **2. javaOOPSConcepts.String (Character) Data Types**
+javaOOPSConcepts.String data types store text or binary data.
 
 | Data Type        | Description                                       | Example Values          |
 |-------------------|---------------------------------------------------|-------------------------|

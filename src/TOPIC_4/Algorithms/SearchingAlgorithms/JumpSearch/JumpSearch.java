@@ -1,4 +1,4 @@
-package Algorithms.SearchingAlgorithms.JumpSearch;
+package TOPIC_4.Algorithms.SearchingAlgorithms.JumpSearch;
 
 public class JumpSearch {
     // Function for Jump Search
